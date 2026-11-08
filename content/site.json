@@ -1,0 +1,78 @@
+{
+  "meta": {
+    "siteTitle": "Casa Lumen",
+    "seoDescription": "A sunlit stone house with a private pool and sea views. Book your stay directly.",
+    "accentColor": "#C4693D"
+  },
+  "hero": {
+    "eyebrow": "Holiday home · Puglia, Italy",
+    "title": "Slow mornings, sea views, and a pool all to yourself.",
+    "subtitle": "A restored stone house among the olive groves, ten minutes from the coast.",
+    "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=2000&q=80"
+  },
+  "booking": {
+    "url": "https://www.airbnb.com/",
+    "buttonText": "Reserve your dates",
+    "priceFrom": "€180",
+    "priceUnit": "night",
+    "note": "You'll be taken to our booking page to choose dates."
+  },
+  "stats": [
+    { "value": "6", "label": "Guests" },
+    { "value": "3", "label": "Bedrooms" },
+    { "value": "2", "label": "Bathrooms" },
+    { "value": "4.97", "label": "Guest rating" }
+  ],
+  "about": {
+    "heading": "A house made for doing very little",
+    "body": "Casa Lumen sits on a quiet hillside surrounded by centuries-old olive trees. Thick stone walls keep it cool in summer, and wide windows let the light pour in all day.\n\nSpend the morning by the pool, cycle to the nearest village for coffee, or drive ten minutes to the beach. In the evening, cook in the fully equipped kitchen and eat outside under the pergola while the sun goes down.",
+    "image": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1400&q=80"
+  },
+  "gallery": [
+    { "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1400&q=80", "caption": "Private pool" },
+    { "image": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1400&q=80", "caption": "Living room" },
+    { "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1400&q=80", "caption": "Main bedroom" },
+    { "image": "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1400&q=80", "caption": "Kitchen" },
+    { "image": "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1400&q=80", "caption": "Guest bedroom" },
+    { "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1400&q=80", "caption": "Terrace at dusk" }
+  ],
+  "amenities": [
+    { "icon": "waves", "label": "Private pool" },
+    { "icon": "wifi", "label": "Fast Wi‑Fi" },
+    { "icon": "chef-hat", "label": "Full kitchen" },
+    { "icon": "snowflake", "label": "Air conditioning" },
+    { "icon": "car", "label": "Free parking" },
+    { "icon": "washing-machine", "label": "Washer" },
+    { "icon": "laptop", "label": "Dedicated workspace" },
+    { "icon": "flame", "label": "Outdoor BBQ" }
+  ],
+  "location": {
+    "heading": "Where you'll be",
+    "body": "Between Ostuni and the Adriatic coast. The nearest beach is a 10‑minute drive, the village 5 minutes by bike, and Brindisi airport 35 minutes away.",
+    "mapQuery": "Ostuni, Italy"
+  },
+  "reviews": [
+    { "name": "Sophie", "from": "London", "text": "Even more beautiful than the photos. We barely left the pool for a week and the hosts' restaurant tips were spot on." },
+    { "name": "Marco", "from": "Milan", "text": "Peaceful, spotless and perfectly equipped. Ideal for a family holiday — we're already planning to come back." },
+    { "name": "Hannah", "from": "Berlin", "text": "The sunsets from the terrace are unreal. Check-in was easy and the house had everything we needed." }
+  ],
+  "rules": [
+    "Check-in after 15:00",
+    "Check-out before 10:00",
+    "No parties or events",
+    "Pets allowed on request"
+  ],
+  "faq": [
+    { "question": "Is the pool heated?", "answer": "The pool is solar‑heated and open from May to October." },
+    { "question": "Do we need a car?", "answer": "We recommend one. The beach and nearby towns are a short drive away, and there's free parking on site." },
+    { "question": "Are towels and linen provided?", "answer": "Yes, bed linen, bath towels and pool towels are all included." }
+  ],
+  "contact": {
+    "heading": "Questions before you book?",
+    "email": "hello@casalumen.com",
+    "phone": "+39 000 000 0000"
+  },
+  "footer": {
+    "text": "© Casa Lumen. All rights reserved."
+  }
+}

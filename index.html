@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Holiday home</title>
+  <meta name="description" content="">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <!-- ===== Owner toolbar (only visible at /admin after login) ===== -->
+  <div class="edit-bar" id="edit-bar">
+    <span class="edit-status" id="edit-status">Editing — tap any text or photo</span>
+    <div class="edit-actions">
+      <button class="eb-btn" id="btn-settings"><i data-lucide="settings-2"></i><span>Settings</span></button>
+      <button class="eb-btn" id="btn-preview"><i data-lucide="eye"></i><span>Preview</span></button>
+      <button class="eb-btn eb-save" id="btn-save"><i data-lucide="check"></i><span>Save</span></button>
+    </div>
+  </div>
+
+  <header class="nav" id="nav">
+    <a href="#top" class="brand" data-text="meta.siteTitle"></a>
+    <nav class="nav-links">
+      <a href="#about">The house</a>
+      <a href="#gallery">Photos</a>
+      <a href="#amenities">Amenities</a>
+      <a href="#location">Location</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-sm" data-href="booking.url" target="_blank" rel="noopener" data-text="booking.buttonText"></a>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <img class="hero-img" data-src="hero.image" alt="">
+      <div class="hero-shade"></div>
+      <button class="edit-only photo-btn hero-photo-btn" data-photo="hero.image"><i data-lucide="image"></i> Change background photo</button>
+      <div class="hero-inner">
+        <p class="eyebrow" data-text="hero.eyebrow"></p>
+        <h1 data-text="hero.title"></h1>
+        <p class="hero-sub" data-text="hero.subtitle"></p>
+        <div class="hero-cta">
+          <a class="btn btn-lg" data-href="booking.url" target="_blank" rel="noopener">
+            <span data-text="booking.buttonText"></span>
+            <i data-lucide="arrow-up-right"></i>
+          </a>
+          <span class="price">From <strong data-text="booking.priceFrom"></strong> / <span data-text="booking.priceUnit"></span></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats reveal" id="stats"></section>
+
+    <section class="about container" id="about">
+      <div class="about-text reveal">
+        <h2 data-text="about.heading"></h2>
+        <div class="prose" id="about-body"></div>
+      </div>
+      <div class="about-media reveal">
+        <img class="about-img" data-src="about.image" alt="">
+        <button class="edit-only photo-btn" data-photo="about.image"><i data-lucide="image"></i> Change photo</button>
+      </div>
+    </section>
+
+    <section class="container" id="gallery">
+      <div class="section-head reveal">
+        <p class="eyebrow">Photos</p>
+        <h2>Take a look around</h2>
+      </div>
+      <div class="gallery" id="gallery-grid"></div>
+    </section>
+
+    <section class="band" id="amenities">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Amenities</p>
+          <h2>Everything you need</h2>
+        </div>
+        <ul class="amenities" id="amenities-list"></ul>
+      </div>
+    </section>
+
+    <section class="container location" id="location">
+      <div class="reveal">
+        <p class="eyebrow">Location</p>
+        <h2 data-text="location.heading"></h2>
+        <p class="prose-p" data-text="location.body"></p>
+        <p class="edit-only edit-hint">Map location is in <b>Settings</b>.</p>
+      </div>
+      <div class="map reveal"><iframe id="map" loading="lazy" title="Map"></iframe></div>
+    </section>
+
+    <section class="band" id="reviews">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Reviews</p>
+          <h2>What guests say</h2>
+        </div>
+        <div class="reviews" id="reviews-list"></div>
+      </div>
+    </section>
+
+    <section class="container two-col" id="faq">
+      <div class="reveal">
+        <p class="eyebrow">Good to know</p>
+        <h2>House rules</h2>
+        <ul class="rules" id="rules-list"></ul>
+      </div>
+      <div class="reveal">
+        <p class="eyebrow">FAQ</p>
+        <h2>Questions</h2>
+        <div class="faq" id="faq-list"></div>
+      </div>
+    </section>
+
+    <section class="cta-final reveal">
+      <h2 data-text="contact.heading"></h2>
+      <p class="contact-line">
+        <a id="contact-email" data-text="contact.email"></a>
+        <span class="dot">·</span>
+        <a id="contact-phone" data-text="contact.phone"></a>
+      </p>
+      <a class="btn btn-lg" data-href="booking.url" target="_blank" rel="noopener">
+        <span data-text="booking.buttonText"></span>
+        <i data-lucide="arrow-up-right"></i>
+      </a>
+      <p class="note" data-text="booking.note"></p>
+    </section>
+  </main>
+
+  <footer class="footer"><p data-text="footer.text"></p></footer>
+
+  <div class="mobile-bar">
+    <div><strong data-text="booking.priceFrom"></strong> <span>/ <span data-text="booking.priceUnit"></span></span></div>
+    <a class="btn" data-href="booking.url" target="_blank" rel="noopener" data-text="booking.buttonText"></a>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lb-btn lb-close" aria-label="Close"><i data-lucide="x"></i></button>
+    <button class="lb-btn lb-prev" aria-label="Previous"><i data-lucide="chevron-left"></i></button>
+    <figure><img id="lb-img" alt=""><figcaption id="lb-cap"></figcaption></figure>
+    <button class="lb-btn lb-next" aria-label="Next"><i data-lucide="chevron-right"></i></button>
+  </div>
+
+  <!-- ===== Owner: login ===== -->
+  <div class="modal" id="login">
+    <form class="modal-card" id="login-form">
+      <h3>Edit your website</h3>
+      <p>Enter the owner password.</p>
+      <input type="password" id="login-pw" placeholder="Password" autocomplete="current-password" required>
+      <p class="form-error" id="login-error"></p>
+      <button class="btn" type="submit">Start editing</button>
+      <a href="/" class="modal-link">Back to the website</a>
+    </form>
+  </div>
+
+  <!-- ===== Owner: settings drawer ===== -->
+  <aside class="drawer" id="drawer">
+    <div class="drawer-head">
+      <h3>Settings</h3>
+      <button class="lb-btn drawer-close" id="drawer-close" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <label>Booking page link <small>Where every "Reserve" button goes</small>
+      <input type="url" data-field="booking.url" placeholder="https://…"></label>
+    <label>Property name
+      <input type="text" data-field="meta.siteTitle"></label>
+    <label>Price from
+      <input type="text" data-field="booking.priceFrom"></label>
+    <label>Price per
+      <input type="text" data-field="booking.priceUnit"></label>
+    <label>Map location <small>Town or full address</small>
+      <input type="text" data-field="location.mapQuery"></label>
+    <label>Contact email
+      <input type="email" data-field="contact.email"></label>
+    <label>Contact phone
+      <input type="tel" data-field="contact.phone"></label>
+    <label>Google description <small>Shown under your name in search results</small>
+      <textarea rows="3" data-field="meta.seoDescription"></textarea></label>
+    <label class="color-row">Brand colour
+      <input type="color" data-field="meta.accentColor"></label>
+    <button class="eb-btn eb-ghost" id="btn-logout"><i data-lucide="log-out"></i><span>Log out</span></button>
+  </aside>
+
+  <input type="file" id="file-input" accept="image/*" hidden>
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
