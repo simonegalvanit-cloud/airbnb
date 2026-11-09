@@ -66,7 +66,9 @@ async function detectCountry() {
   } catch (_) {}
   return '';
 }
+const IS_BOT = /bot|crawl|spider|slurp|google|bing|yandex|duckduck|baidu|facebookexternalhit|whatsapp|telegram/i.test(navigator.userAgent);
 function pickLanguage(country) {
+  if (IS_BOT) return mainLang(); // Google & link previews always get the main language
   const ok = l => l && langs().includes(l);
   let saved = ''; try { saved = localStorage.getItem('lang') || ''; } catch (_) {}
   if (ok(saved)) return saved;                                   // visitor chose it before
@@ -457,7 +459,9 @@ function showLogin() {
     if (r && r.ok) {
       try { sessionStorage.setItem('owner-pw', password); } catch (_) {}
       $('login').classList.remove('open');
-      startEditing();
+      await startEditing();
+      const info = await r.json().catch(() => ({}));
+      if (info.storage && info.storage !== 'ok') toast('⚠️ ' + info.storage, 9000);
     } else {
       $('login-error').textContent = r && r.status === 401 ? 'Password errata, riprova.' : 'Impossibile contattare il server.';
     }

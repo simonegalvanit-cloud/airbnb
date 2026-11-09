@@ -1,4 +1,5 @@
 import { put } from '@vercel/blob';
+import { blobAuth, blobConfigured, NOT_CONNECTED } from './_blob.js';
 import { isOwner, denied } from './_auth.js';
 
 const TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif', 'image/avif': 'avif' };
@@ -7,6 +8,7 @@ const TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', '
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
   if (!isOwner(req)) return denied(res);
+  if (!blobConfigured(req)) return res.status(500).json({ error: NOT_CONNECTED });
 
   const type = String(req.headers['content-type'] || '').split(';')[0].trim();
   const ext = TYPES[type];
@@ -25,7 +27,8 @@ export default async function handler(req, res) {
     const blob = await put(`images/photo.${ext}`, Buffer.concat(chunks), {
       access: 'public',
       contentType: type,
-      addRandomSuffix: true
+      addRandomSuffix: true,
+      ...blobAuth(req)
     });
     res.status(200).json({ url: blob.url });
   } catch (err) {

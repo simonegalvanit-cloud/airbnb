@@ -1,11 +1,16 @@
 import { list } from '@vercel/blob';
+import { blobAuth, blobConfigured, NOT_CONNECTED } from './_blob.js';
 
 // Returns the most recently saved website content.
 // Each save is stored as a new file (content/site-<timestamp>.json),
 // so there is never a stale cached copy and older versions stay as backups.
 export default async function handler(req, res) {
+  if (!blobConfigured(req)) {
+    res.setHeader('Cache-Control', 'no-store');
+    return res.status(404).json({ error: NOT_CONNECTED });
+  }
   try {
-    const { blobs } = await list({ prefix: 'content/', limit: 1000 });
+    const { blobs } = await list({ prefix: 'content/', limit: 1000, ...blobAuth(req) });
     if (!blobs.length) {
       res.setHeader('Cache-Control', 'no-store');
       return res.status(404).json({ error: 'No saved content yet' });

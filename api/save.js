@@ -1,4 +1,5 @@
 import { put, list, del } from '@vercel/blob';
+import { blobAuth, blobConfigured, NOT_CONNECTED } from './_blob.js';
 import { isOwner, denied } from './_auth.js';
 
 const KEEP_VERSIONS = 30; // older saves are kept as backups, then cleaned up
@@ -6,6 +7,7 @@ const KEEP_VERSIONS = 30; // older saves are kept as backups, then cleaned up
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
   if (!isOwner(req)) return denied(res);
+  if (!blobConfigured(req)) return res.status(500).json({ error: NOT_CONNECTED });
 
   const data = req.body;
   if (!data || typeof data !== 'object' || Array.isArray(data)) {
@@ -19,14 +21,15 @@ export default async function handler(req, res) {
     await put(`content/site-${stamp}.json`, body, {
       access: 'public',
       contentType: 'application/json',
-      addRandomSuffix: false
+      addRandomSuffix: false,
+      ...blobAuth(req)
     });
 
     // Tidy up very old versions
-    const { blobs } = await list({ prefix: 'content/', limit: 1000 });
+    const { blobs } = await list({ prefix: 'content/', limit: 1000, ...blobAuth(req) });
     blobs.sort((a, b) => (a.pathname < b.pathname ? 1 : -1));
     const old = blobs.slice(KEEP_VERSIONS).map(b => b.url);
-    if (old.length) await del(old);
+    if (old.length) await del(old, blobAuth(req));
 
     res.status(200).json({ ok: true });
   } catch (err) {
