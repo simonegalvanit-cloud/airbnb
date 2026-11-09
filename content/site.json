@@ -1,78 +1,488 @@
 {
+  "languages": [
+    "it",
+    "en",
+    "de",
+    "fr"
+  ],
+  "defaultLanguage": "it",
   "meta": {
-    "siteTitle": "Casa Lumen",
-    "seoDescription": "A sunlit stone house with a private pool and sea views. Book your stay directly.",
-    "accentColor": "#C4693D"
+    "siteTitle": "Gilda di Langa",
+    "cin": "",
+    "seoDescription": {
+      "it": "Gilda di Langa, locazione turistica a Roddi (CN): alloggio intero con camera matrimoniale, soggiorno open space con cucina e terrazza con vista sulle Langhe. Fino a 4 ospiti.",
+      "en": "Gilda di Langa, holiday apartment in Roddi (CN): a whole flat with a double bedroom, open-plan living room with kitchen and a terrace overlooking the Langhe hills. Up to 4 guests.",
+      "de": "Gilda di Langa, Ferienwohnung in Roddi (CN): ganze Wohnung mit Doppelzimmer, offenem Wohnbereich mit Küche und Terrasse mit Blick auf die Langhe. Bis zu 4 Gäste.",
+      "fr": "Gilda di Langa, location de vacances à Roddi (CN) : logement entier avec chambre double, séjour ouvert avec cuisine et terrasse avec vue sur les Langhe. Jusqu'à 4 personnes."
+    },
+    "accentColor": "#8C3B3B"
+  },
+  "labels": {
+    "navHouse": {
+      "it": "L'alloggio",
+      "en": "The apartment",
+      "de": "Die Wohnung",
+      "fr": "Le logement"
+    },
+    "navPhotos": {
+      "it": "Foto",
+      "en": "Photos",
+      "de": "Fotos",
+      "fr": "Photos"
+    },
+    "navAmenities": {
+      "it": "Servizi",
+      "en": "Amenities",
+      "de": "Ausstattung",
+      "fr": "Équipements"
+    },
+    "navLocation": {
+      "it": "Dove siamo",
+      "en": "Location",
+      "de": "Lage",
+      "fr": "Emplacement"
+    },
+    "navFaq": {
+      "it": "Contatti",
+      "en": "Contact",
+      "de": "Kontakt",
+      "fr": "Contact"
+    },
+    "priceFrom": {
+      "it": "Da",
+      "en": "From",
+      "de": "Ab",
+      "fr": "À partir de"
+    },
+    "photosEyebrow": {
+      "it": "Foto",
+      "en": "Photos",
+      "de": "Fotos",
+      "fr": "Photos"
+    },
+    "photosTitle": {
+      "it": "Uno sguardo all'alloggio",
+      "en": "Take a look inside",
+      "de": "Ein Blick hinein",
+      "fr": "Un aperçu du logement"
+    },
+    "amenitiesEyebrow": {
+      "it": "Servizi",
+      "en": "Amenities",
+      "de": "Ausstattung",
+      "fr": "Équipements"
+    },
+    "amenitiesTitle": {
+      "it": "Cosa troverete",
+      "en": "What you'll find",
+      "de": "Was Sie erwartet",
+      "fr": "Ce que vous trouverez"
+    },
+    "locationEyebrow": {
+      "it": "Dove siamo",
+      "en": "Location",
+      "de": "Lage",
+      "fr": "Emplacement"
+    },
+    "reviewsEyebrow": {
+      "it": "Recensioni",
+      "en": "Reviews",
+      "de": "Bewertungen",
+      "fr": "Avis"
+    },
+    "reviewsTitle": {
+      "it": "Cosa dicono gli ospiti",
+      "en": "What guests say",
+      "de": "Was Gäste sagen",
+      "fr": "Ce qu'en disent nos hôtes"
+    },
+    "rulesEyebrow": {
+      "it": "Da sapere",
+      "en": "Good to know",
+      "de": "Gut zu wissen",
+      "fr": "Bon à savoir"
+    },
+    "rulesTitle": {
+      "it": "Regole della casa",
+      "en": "House rules",
+      "de": "Hausregeln",
+      "fr": "Règlement intérieur"
+    },
+    "faqEyebrow": {
+      "it": "Domande frequenti",
+      "en": "FAQ",
+      "de": "Häufige Fragen",
+      "fr": "Questions fréquentes"
+    },
+    "faqTitle": {
+      "it": "Domande",
+      "en": "Questions",
+      "de": "Fragen",
+      "fr": "Questions"
+    },
+    "contactEyebrow": {
+      "it": "Prenotazioni",
+      "en": "Bookings",
+      "de": "Buchungen",
+      "fr": "Réservations"
+    },
+    "call": {
+      "it": "Chiama",
+      "en": "Call",
+      "de": "Anrufen",
+      "fr": "Appeler"
+    }
   },
   "hero": {
-    "eyebrow": "Holiday home · Puglia, Italy",
-    "title": "Slow mornings, sea views, and a pool all to yourself.",
-    "subtitle": "A restored stone house among the olive groves, ten minutes from the coast.",
-    "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=2000&q=80"
+    "eyebrow": {
+      "it": "Locazione turistica · Roddi, Langhe",
+      "en": "Holiday apartment · Roddi, Langhe",
+      "de": "Ferienwohnung · Roddi, Langhe",
+      "fr": "Location de vacances · Roddi, Langhe"
+    },
+    "title": {
+      "it": "Una terrazza sulle colline delle Langhe.",
+      "en": "A terrace overlooking the Langhe hills.",
+      "de": "Eine Terrasse mit Blick auf die Hügel der Langhe.",
+      "fr": "Une terrasse face aux collines des Langhe."
+    },
+    "subtitle": {
+      "it": "Un alloggio intero a Roddi, a pochi minuti da Alba, per un massimo di 4 ospiti.",
+      "en": "A whole apartment in Roddi, a few minutes from Alba, for up to 4 guests.",
+      "de": "Eine ganze Wohnung in Roddi, wenige Minuten von Alba entfernt, für bis zu 4 Gäste.",
+      "fr": "Un logement entier à Roddi, à quelques minutes d'Alba, pour 4 personnes maximum."
+    },
+    "image": "/images/gilda/terrazza.jpg"
   },
   "booking": {
-    "url": "https://www.airbnb.com/",
-    "buttonText": "Reserve your dates",
-    "priceFrom": "€180",
-    "priceUnit": "night",
-    "note": "You'll be taken to our booking page to choose dates."
+    "url": "#contatti",
+    "buttonText": {
+      "it": "Contattaci per prenotare",
+      "en": "Contact us to book",
+      "de": "Kontakt für Buchungen",
+      "fr": "Contactez-nous pour réserver"
+    },
+    "priceFrom": "",
+    "priceUnit": {
+      "it": "notte",
+      "en": "night",
+      "de": "Nacht",
+      "fr": "nuit"
+    },
+    "note": {
+      "it": "Le prenotazioni si fanno direttamente con noi: chiamateci o scriveteci, saremo felici di rispondere a ogni domanda.",
+      "en": "Bookings are made directly with us: give us a call or send a message, we'll be happy to answer any question.",
+      "de": "Buchungen erfolgen direkt bei uns: Rufen Sie uns an oder schreiben Sie uns, wir beantworten gerne alle Fragen.",
+      "fr": "Les réservations se font directement auprès de nous : appelez-nous ou écrivez-nous, nous répondrons volontiers à vos questions."
+    }
   },
   "stats": [
-    { "value": "6", "label": "Guests" },
-    { "value": "3", "label": "Bedrooms" },
-    { "value": "2", "label": "Bathrooms" },
-    { "value": "4.97", "label": "Guest rating" }
+    {
+      "value": "4",
+      "label": {
+        "it": "Ospiti",
+        "en": "Guests",
+        "de": "Gäste",
+        "fr": "Personnes"
+      }
+    },
+    {
+      "value": "1",
+      "label": {
+        "it": "Camera matrimoniale",
+        "en": "Double bedroom",
+        "de": "Doppelzimmer",
+        "fr": "Chambre double"
+      }
+    },
+    {
+      "value": "1",
+      "label": {
+        "it": "Divano letto",
+        "en": "Sofa bed",
+        "de": "Schlafsofa",
+        "fr": "Canapé-lit"
+      }
+    },
+    {
+      "value": "1",
+      "label": {
+        "it": "Bagno",
+        "en": "Bathroom",
+        "de": "Badezimmer",
+        "fr": "Salle de bain"
+      }
+    }
   ],
   "about": {
-    "heading": "A house made for doing very little",
-    "body": "Casa Lumen sits on a quiet hillside surrounded by centuries-old olive trees. Thick stone walls keep it cool in summer, and wide windows let the light pour in all day.\n\nSpend the morning by the pool, cycle to the nearest village for coffee, or drive ten minutes to the beach. In the evening, cook in the fully equipped kitchen and eat outside under the pergola while the sun goes down.",
-    "image": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1400&q=80"
+    "heading": {
+      "it": "Un alloggio tutto per voi, nel cuore delle Langhe",
+      "en": "A place all to yourselves, in the heart of the Langhe",
+      "de": "Eine Wohnung ganz für Sie, im Herzen der Langhe",
+      "fr": "Un logement rien que pour vous, au cœur des Langhe"
+    },
+    "body": {
+      "it": "Gilda di Langa è un alloggio intero all'ultimo piano, sotto un tetto in legno con travi a vista: una camera con letto matrimoniale, un soggiorno open space con cucina, zona pranzo, divano letto e un angolo lettura con stufa a pellet, il bagno con doccia e una terrazza con vista sulle colline delle Langhe.\n\nPuò ospitare fino a 4 persone ed è il punto di partenza ideale per scoprire le Langhe, tra vigneti, cantine e borghi, a pochi minuti da Alba.",
+      "en": "Gilda di Langa is a whole top-floor apartment beneath a wooden roof with exposed beams: a bedroom with a double bed, an open-plan living room with kitchen, dining area, sofa bed and a reading corner with a pellet stove, a bathroom with shower and a terrace looking out over the Langhe hills.\n\nIt sleeps up to 4 and makes an ideal base for exploring the Langhe, with its vineyards, wineries and villages, a few minutes from Alba.",
+      "de": "Gilda di Langa ist eine ganze Dachgeschosswohnung unter einem Holzdach mit sichtbaren Balken: ein Schlafzimmer mit Doppelbett, ein offener Wohnbereich mit Küche, Essbereich, Schlafsofa und einer Leseecke mit Pelletofen, ein Bad mit Dusche und eine Terrasse mit Blick auf die Hügel der Langhe.\n\nSie bietet Platz für bis zu 4 Personen und ist der ideale Ausgangspunkt, um die Langhe mit ihren Weinbergen, Kellereien und Dörfern zu entdecken – nur wenige Minuten von Alba entfernt.",
+      "fr": "Gilda di Langa est un logement entier au dernier étage, sous une charpente en bois apparente : une chambre avec lit double, un séjour ouvert avec cuisine, coin repas, canapé-lit et coin lecture avec poêle à granulés, une salle de bain avec douche et une terrasse avec vue sur les collines des Langhe.\n\nIl accueille jusqu'à 4 personnes et constitue un point de départ idéal pour découvrir les Langhe, leurs vignobles, caves et villages, à quelques minutes d'Alba."
+    },
+    "image": "/images/gilda/soggiorno.jpg"
   },
   "gallery": [
-    { "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1400&q=80", "caption": "Private pool" },
-    { "image": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1400&q=80", "caption": "Living room" },
-    { "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1400&q=80", "caption": "Main bedroom" },
-    { "image": "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1400&q=80", "caption": "Kitchen" },
-    { "image": "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1400&q=80", "caption": "Guest bedroom" },
-    { "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1400&q=80", "caption": "Terrace at dusk" }
+    {
+      "image": "/images/gilda/terrazza.jpg",
+      "caption": {
+        "it": "La terrazza con vista sulle Langhe",
+        "en": "The terrace overlooking the Langhe",
+        "de": "Die Terrasse mit Blick auf die Langhe",
+        "fr": "La terrasse avec vue sur les Langhe"
+      }
+    },
+    {
+      "image": "/images/gilda/soggiorno.jpg",
+      "caption": {
+        "it": "Soggiorno open space",
+        "en": "Open-plan living room",
+        "de": "Offener Wohnbereich",
+        "fr": "Séjour ouvert"
+      }
+    },
+    {
+      "image": "/images/gilda/camera.jpg",
+      "caption": {
+        "it": "Camera matrimoniale",
+        "en": "Double bedroom",
+        "de": "Doppelzimmer",
+        "fr": "Chambre double"
+      }
+    },
+    {
+      "image": "/images/gilda/cucina.jpg",
+      "caption": {
+        "it": "Cucina",
+        "en": "Kitchen",
+        "de": "Küche",
+        "fr": "Cuisine"
+      }
+    },
+    {
+      "image": "/images/gilda/divano-letto.jpg",
+      "caption": {
+        "it": "Divano letto",
+        "en": "Sofa bed",
+        "de": "Schlafsofa",
+        "fr": "Canapé-lit"
+      }
+    },
+    {
+      "image": "/images/gilda/angolo-lettura.jpg",
+      "caption": {
+        "it": "Angolo lettura con stufa",
+        "en": "Reading corner with stove",
+        "de": "Leseecke mit Ofen",
+        "fr": "Coin lecture avec poêle"
+      }
+    },
+    {
+      "image": "/images/gilda/bagno-doccia.jpg",
+      "caption": {
+        "it": "Bagno con doccia",
+        "en": "Bathroom with shower",
+        "de": "Bad mit Dusche",
+        "fr": "Salle de bain avec douche"
+      }
+    },
+    {
+      "image": "/images/gilda/bagno-lavabo.jpg",
+      "caption": {
+        "it": "Bagno",
+        "en": "Bathroom",
+        "de": "Badezimmer",
+        "fr": "Salle de bain"
+      }
+    }
   ],
   "amenities": [
-    { "icon": "waves", "label": "Private pool" },
-    { "icon": "wifi", "label": "Fast Wi‑Fi" },
-    { "icon": "chef-hat", "label": "Full kitchen" },
-    { "icon": "snowflake", "label": "Air conditioning" },
-    { "icon": "car", "label": "Free parking" },
-    { "icon": "washing-machine", "label": "Washer" },
-    { "icon": "laptop", "label": "Dedicated workspace" },
-    { "icon": "flame", "label": "Outdoor BBQ" }
+    {
+      "icon": "mountain",
+      "label": {
+        "it": "Terrazza con vista sulle Langhe",
+        "en": "Terrace with Langhe views",
+        "de": "Terrasse mit Langhe-Blick",
+        "fr": "Terrasse avec vue sur les Langhe"
+      }
+    },
+    {
+      "icon": "bed-double",
+      "label": {
+        "it": "Letto matrimoniale",
+        "en": "Double bed",
+        "de": "Doppelbett",
+        "fr": "Lit double"
+      }
+    },
+    {
+      "icon": "sofa",
+      "label": {
+        "it": "Divano letto",
+        "en": "Sofa bed",
+        "de": "Schlafsofa",
+        "fr": "Canapé-lit"
+      }
+    },
+    {
+      "icon": "chef-hat",
+      "label": {
+        "it": "Cucina con piano a induzione",
+        "en": "Kitchen with induction hob",
+        "de": "Küche mit Induktionskochfeld",
+        "fr": "Cuisine avec plaque à induction"
+      }
+    },
+    {
+      "icon": "coffee",
+      "label": {
+        "it": "Macchina del caffè e bollitore",
+        "en": "Coffee machine and kettle",
+        "de": "Kaffeemaschine und Wasserkocher",
+        "fr": "Machine à café et bouilloire"
+      }
+    },
+    {
+      "icon": "utensils-crossed",
+      "label": {
+        "it": "Zona pranzo",
+        "en": "Dining area",
+        "de": "Essbereich",
+        "fr": "Coin repas"
+      }
+    },
+    {
+      "icon": "flame",
+      "label": {
+        "it": "Stufa a pellet",
+        "en": "Pellet stove",
+        "de": "Pelletofen",
+        "fr": "Poêle à granulés"
+      }
+    },
+    {
+      "icon": "tv",
+      "label": {
+        "it": "TV",
+        "en": "TV",
+        "de": "TV",
+        "fr": "TV"
+      }
+    },
+    {
+      "icon": "book-open",
+      "label": {
+        "it": "Angolo lettura",
+        "en": "Reading corner",
+        "de": "Leseecke",
+        "fr": "Coin lecture"
+      }
+    },
+    {
+      "icon": "shower-head",
+      "label": {
+        "it": "Bagno con doccia",
+        "en": "Bathroom with shower",
+        "de": "Bad mit Dusche",
+        "fr": "Salle de bain avec douche"
+      }
+    }
   ],
   "location": {
-    "heading": "Where you'll be",
-    "body": "Between Ostuni and the Adriatic coast. The nearest beach is a 10‑minute drive, the village 5 minutes by bike, and Brindisi airport 35 minutes away.",
-    "mapQuery": "Ostuni, Italy"
+    "heading": {
+      "it": "Roddi, nelle Langhe",
+      "en": "Roddi, in the Langhe",
+      "de": "Roddi, in den Langhe",
+      "fr": "Roddi, dans les Langhe"
+    },
+    "body": {
+      "it": "Roddi è un piccolo borgo delle Langhe dominato dal suo castello, a pochi minuti da Alba. Un punto di partenza comodo per visitare le colline patrimonio UNESCO, i paesi del Barolo e le cantine della zona.",
+      "en": "Roddi is a small Langhe village crowned by its castle, a few minutes from Alba. A handy base for visiting the UNESCO-listed hills, the Barolo villages and the local wineries.",
+      "de": "Roddi ist ein kleines Dorf in den Langhe mit einer Burg, nur wenige Minuten von Alba entfernt. Ein idealer Ausgangspunkt für die UNESCO-Hügel, die Barolo-Dörfer und die Weingüter der Gegend.",
+      "fr": "Roddi est un petit village des Langhe dominé par son château, à quelques minutes d'Alba. Un point de départ pratique pour visiter les collines classées à l'UNESCO, les villages du Barolo et les caves de la région."
+    },
+    "address": "Via Pico della Mirandola 7, 12060 Roddi (CN)",
+    "mapQuery": "Via Pico della Mirandola 7, 12060 Roddi CN, Italia"
   },
-  "reviews": [
-    { "name": "Sophie", "from": "London", "text": "Even more beautiful than the photos. We barely left the pool for a week and the hosts' restaurant tips were spot on." },
-    { "name": "Marco", "from": "Milan", "text": "Peaceful, spotless and perfectly equipped. Ideal for a family holiday — we're already planning to come back." },
-    { "name": "Hannah", "from": "Berlin", "text": "The sunsets from the terrace are unreal. Check-in was easy and the house had everything we needed." }
-  ],
-  "rules": [
-    "Check-in after 15:00",
-    "Check-out before 10:00",
-    "No parties or events",
-    "Pets allowed on request"
-  ],
+  "reviews": [],
+  "rules": [],
   "faq": [
-    { "question": "Is the pool heated?", "answer": "The pool is solar‑heated and open from May to October." },
-    { "question": "Do we need a car?", "answer": "We recommend one. The beach and nearby towns are a short drive away, and there's free parking on site." },
-    { "question": "Are towels and linen provided?", "answer": "Yes, bed linen, bath towels and pool towels are all included." }
+    {
+      "question": {
+        "it": "Quante persone può ospitare?",
+        "en": "How many guests can stay?",
+        "de": "Für wie viele Personen ist die Wohnung?",
+        "fr": "Combien de personnes peut-il accueillir ?"
+      },
+      "answer": {
+        "it": "Fino a 4 ospiti: 2 nella camera con letto matrimoniale e 2 sul divano letto del soggiorno.",
+        "en": "Up to 4 guests: 2 in the bedroom with a double bed and 2 on the sofa bed in the living room.",
+        "de": "Bis zu 4 Gäste: 2 im Schlafzimmer mit Doppelbett und 2 auf dem Schlafsofa im Wohnbereich.",
+        "fr": "Jusqu'à 4 personnes : 2 dans la chambre avec lit double et 2 sur le canapé-lit du séjour."
+      }
+    },
+    {
+      "question": {
+        "it": "Come si prenota?",
+        "en": "How do I book?",
+        "de": "Wie kann ich buchen?",
+        "fr": "Comment réserver ?"
+      },
+      "answer": {
+        "it": "Chiamate o scrivete ad Alessia o Paolo ai numeri qui sotto: vi confermeremo disponibilità e dettagli.",
+        "en": "Call or message Alessia or Paolo at the numbers below and we'll confirm availability and details.",
+        "de": "Rufen Sie Alessia oder Paolo unter den untenstehenden Nummern an oder schreiben Sie ihnen – wir bestätigen Verfügbarkeit und Details.",
+        "fr": "Appelez ou écrivez à Alessia ou Paolo aux numéros ci-dessous : nous vous confirmerons les disponibilités et les détails."
+      }
+    },
+    {
+      "question": {
+        "it": "L'alloggio è condiviso con altri ospiti?",
+        "en": "Is the apartment shared?",
+        "de": "Wird die Wohnung geteilt?",
+        "fr": "Le logement est-il partagé ?"
+      },
+      "answer": {
+        "it": "No, l'alloggio è intero e riservato solo a voi.",
+        "en": "No, you'll have the whole apartment to yourselves.",
+        "de": "Nein, die ganze Wohnung steht nur Ihnen zur Verfügung.",
+        "fr": "Non, le logement entier est réservé à vous seuls."
+      }
+    }
   ],
   "contact": {
-    "heading": "Questions before you book?",
-    "email": "hello@casalumen.com",
-    "phone": "+39 000 000 0000"
+    "heading": {
+      "it": "Prenota con una telefonata",
+      "en": "Book with a phone call",
+      "de": "Buchen Sie per Telefon",
+      "fr": "Réservez par téléphone"
+    },
+    "people": [
+      {
+        "name": "Alessia D'Aleo",
+        "phone": "+39 338 163 1904"
+      },
+      {
+        "name": "Paolo D'Aleo",
+        "phone": "+39 338 678 3843"
+      }
+    ],
+    "whatsapp": true,
+    "email": ""
   },
   "footer": {
-    "text": "© Casa Lumen. All rights reserved."
+    "text": {
+      "it": "© Gilda di Langa · Locazione turistica",
+      "en": "© Gilda di Langa · Holiday apartment",
+      "de": "© Gilda di Langa · Ferienwohnung",
+      "fr": "© Gilda di Langa · Location de vacances"
+    }
   }
 }

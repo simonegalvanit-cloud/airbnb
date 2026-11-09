@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,24 +13,33 @@
 <body>
   <!-- ===== Owner toolbar (only visible at /admin after login) ===== -->
   <div class="edit-bar" id="edit-bar">
-    <span class="edit-status" id="edit-status">Editing — tap any text or photo</span>
+    <div class="edit-left">
+      <select class="edit-lang" id="edit-lang" aria-label="Language you are editing"></select>
+      <span class="edit-status" id="edit-status">Tocca un testo o una foto per modificarli</span>
+    </div>
     <div class="edit-actions">
-      <button class="eb-btn" id="btn-settings"><i data-lucide="settings-2"></i><span>Settings</span></button>
-      <button class="eb-btn" id="btn-preview"><i data-lucide="eye"></i><span>Preview</span></button>
-      <button class="eb-btn eb-save" id="btn-save"><i data-lucide="check"></i><span>Save</span></button>
+      <button class="eb-btn" id="btn-settings"><i data-lucide="settings-2"></i><span>Impostazioni</span></button>
+      <button class="eb-btn" id="btn-preview"><i data-lucide="eye"></i><span>Anteprima</span></button>
+      <button class="eb-btn eb-save" id="btn-save"><i data-lucide="check"></i><span>Salva</span></button>
     </div>
   </div>
 
   <header class="nav" id="nav">
     <a href="#top" class="brand" data-text="meta.siteTitle"></a>
     <nav class="nav-links">
-      <a href="#about">The house</a>
-      <a href="#gallery">Photos</a>
-      <a href="#amenities">Amenities</a>
-      <a href="#location">Location</a>
-      <a href="#faq">FAQ</a>
+      <a href="#about" data-text="labels.navHouse"></a>
+      <a href="#gallery" data-text="labels.navPhotos"></a>
+      <a href="#amenities" data-text="labels.navAmenities"></a>
+      <a href="#location" data-text="labels.navLocation"></a>
+      <a href="#contatti" data-text="labels.navFaq"></a>
     </nav>
-    <a class="btn btn-sm" data-href="booking.url" target="_blank" rel="noopener" data-text="booking.buttonText"></a>
+    <div class="nav-right">
+      <div class="lang" id="lang">
+        <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-label="Language"><i data-lucide="globe"></i><span id="lang-current"></span></button>
+        <div class="lang-menu" id="lang-menu"></div>
+      </div>
+      <a class="btn btn-sm" data-href="booking.url" target="_blank" rel="noopener" data-text="booking.buttonText"></a>
+    </div>
   </header>
 
   <main id="top">
@@ -45,9 +54,9 @@
         <div class="hero-cta">
           <a class="btn btn-lg" data-href="booking.url" target="_blank" rel="noopener">
             <span data-text="booking.buttonText"></span>
-            <i data-lucide="arrow-up-right"></i>
+            <i data-lucide="arrow-right"></i>
           </a>
-          <span class="price">From <strong data-text="booking.priceFrom"></strong> / <span data-text="booking.priceUnit"></span></span>
+          <span class="price price-wrap"><span data-text="labels.priceFrom"></span> <strong data-text="booking.priceFrom"></strong> / <span data-text="booking.priceUnit"></span></span>
         </div>
       </div>
     </section>
@@ -67,8 +76,8 @@
 
     <section class="container" id="gallery">
       <div class="section-head reveal">
-        <p class="eyebrow">Photos</p>
-        <h2>Take a look around</h2>
+        <p class="eyebrow" data-text="labels.photosEyebrow"></p>
+        <h2 data-text="labels.photosTitle"></h2>
       </div>
       <div class="gallery" id="gallery-grid"></div>
     </section>
@@ -76,8 +85,8 @@
     <section class="band" id="amenities">
       <div class="container">
         <div class="section-head reveal">
-          <p class="eyebrow">Amenities</p>
-          <h2>Everything you need</h2>
+          <p class="eyebrow" data-text="labels.amenitiesEyebrow"></p>
+          <h2 data-text="labels.amenitiesTitle"></h2>
         </div>
         <ul class="amenities" id="amenities-list"></ul>
       </div>
@@ -85,7 +94,7 @@
 
     <section class="container location" id="location">
       <div class="reveal">
-        <p class="eyebrow">Location</p>
+        <p class="eyebrow" data-text="labels.locationEyebrow"></p>
         <h2 data-text="location.heading"></h2>
         <p class="prose-p" data-text="location.body"></p>
         <p class="edit-only edit-hint">Map location is in <b>Settings</b>.</p>
@@ -96,45 +105,45 @@
     <section class="band" id="reviews">
       <div class="container">
         <div class="section-head reveal">
-          <p class="eyebrow">Reviews</p>
-          <h2>What guests say</h2>
+          <p class="eyebrow" data-text="labels.reviewsEyebrow"></p>
+          <h2 data-text="labels.reviewsTitle"></h2>
         </div>
         <div class="reviews" id="reviews-list"></div>
       </div>
     </section>
 
     <section class="container two-col" id="faq">
-      <div class="reveal">
-        <p class="eyebrow">Good to know</p>
-        <h2>House rules</h2>
+      <div class="reveal" id="rules-col">
+        <p class="eyebrow" data-text="labels.rulesEyebrow"></p>
+        <h2 data-text="labels.rulesTitle"></h2>
         <ul class="rules" id="rules-list"></ul>
       </div>
-      <div class="reveal">
-        <p class="eyebrow">FAQ</p>
-        <h2>Questions</h2>
+      <div class="reveal" id="faq-col">
+        <p class="eyebrow" data-text="labels.faqEyebrow"></p>
+        <h2 data-text="labels.faqTitle"></h2>
         <div class="faq" id="faq-list"></div>
       </div>
     </section>
 
-    <section class="cta-final reveal">
-      <h2 data-text="contact.heading"></h2>
-      <p class="contact-line">
-        <a id="contact-email" data-text="contact.email"></a>
-        <span class="dot">·</span>
-        <a id="contact-phone" data-text="contact.phone"></a>
-      </p>
-      <a class="btn btn-lg" data-href="booking.url" target="_blank" rel="noopener">
-        <span data-text="booking.buttonText"></span>
-        <i data-lucide="arrow-up-right"></i>
-      </a>
-      <p class="note" data-text="booking.note"></p>
+    <section class="cta-final" id="contatti">
+      <div class="reveal">
+        <p class="eyebrow" data-text="labels.contactEyebrow"></p>
+        <h2 data-text="contact.heading"></h2>
+        <p class="note" data-text="booking.note"></p>
+      </div>
+      <div class="people reveal" id="people"></div>
+      <p class="contact-line" id="contact-email-wrap"><i data-lucide="mail"></i> <a id="contact-email" data-text="contact.email"></a></p>
     </section>
   </main>
 
-  <footer class="footer"><p data-text="footer.text"></p></footer>
+  <footer class="footer">
+    <p class="footer-addr" data-text="location.address"></p>
+    <p id="cin-line">CIN: <span data-text="meta.cin"></span></p>
+    <p data-text="footer.text"></p>
+  </footer>
 
   <div class="mobile-bar">
-    <div><strong data-text="booking.priceFrom"></strong> <span>/ <span data-text="booking.priceUnit"></span></span></div>
+    <div class="price-wrap"><strong data-text="booking.priceFrom"></strong> <span>/ <span data-text="booking.priceUnit"></span></span></div>
     <a class="btn" data-href="booking.url" target="_blank" rel="noopener" data-text="booking.buttonText"></a>
   </div>
 
@@ -148,40 +157,48 @@
   <!-- ===== Owner: login ===== -->
   <div class="modal" id="login">
     <form class="modal-card" id="login-form">
-      <h3>Edit your website</h3>
-      <p>Enter the owner password.</p>
+      <h3>Modifica il sito</h3>
+      <p>Inserisci la password.</p>
       <input type="password" id="login-pw" placeholder="Password" autocomplete="current-password" required>
       <p class="form-error" id="login-error"></p>
-      <button class="btn" type="submit">Start editing</button>
-      <a href="/" class="modal-link">Back to the website</a>
+      <button class="btn" type="submit">Inizia a modificare</button>
+      <a href="/" class="modal-link">Torna al sito</a>
     </form>
   </div>
 
   <!-- ===== Owner: settings drawer ===== -->
   <aside class="drawer" id="drawer">
     <div class="drawer-head">
-      <h3>Settings</h3>
+      <h3>Impostazioni</h3>
       <button class="lb-btn drawer-close" id="drawer-close" aria-label="Close"><i data-lucide="x"></i></button>
     </div>
-    <label>Booking page link <small>Where every "Reserve" button goes</small>
-      <input type="url" data-field="booking.url" placeholder="https://…"></label>
-    <label>Property name
+    <div class="lang-settings">
+      <p class="ls-title">Lingue <small>Spunta le lingue del sito. Ogni visitatore vede quella del suo Paese e può cambiarla.</small></p>
+      <div id="lang-checks" class="lang-checks"></div>
+      <label>Lingua principale <small>Usata quando un testo non è ancora tradotto</small>
+        <select id="default-lang"></select></label>
+      <p class="ls-hint">Per tradurre: scegli la lingua nella barra nera in alto, poi tocca un testo e scrivi. I testi non ancora tradotti hanno un bordo giallo.</p>
+    </div>
+    <label>Nome della struttura
       <input type="text" data-field="meta.siteTitle"></label>
-    <label>Price from
-      <input type="text" data-field="booking.priceFrom"></label>
-    <label>Price per
-      <input type="text" data-field="booking.priceUnit"></label>
-    <label>Map location <small>Town or full address</small>
+    <label>CIN <small>Codice Identificativo Nazionale, mostrato in fondo alla pagina</small>
+      <input type="text" data-field="meta.cin" placeholder="IT004…"></label>
+    <label>Indirizzo
+      <input type="text" data-field="location.address"></label>
+    <label>Posizione sulla mappa <small>Indirizzo o nome del paese</small>
       <input type="text" data-field="location.mapQuery"></label>
-    <label>Contact email
+    <label>Link del pulsante "Prenota" <small>Lascia <b>#contatti</b> per portare ai vostri numeri. In futuro potete mettere il link di Airbnb o Booking.</small>
+      <input type="text" data-field="booking.url" placeholder="#contatti"></label>
+    <label>Prezzo "a partire da" <small>Lascia vuoto per non mostrarlo</small>
+      <input type="text" data-field="booking.priceFrom" placeholder="es. €90"></label>
+    <label>Email <small>Facoltativa</small>
       <input type="email" data-field="contact.email"></label>
-    <label>Contact phone
-      <input type="tel" data-field="contact.phone"></label>
-    <label>Google description <small>Shown under your name in search results</small>
+    <label class="check-row"><input type="checkbox" id="wa-toggle"> Mostra il pulsante WhatsApp</label>
+    <label>Descrizione per Google <small>Il testo sotto il nome nei risultati di ricerca</small>
       <textarea rows="3" data-field="meta.seoDescription"></textarea></label>
-    <label class="color-row">Brand colour
+    <label class="color-row">Colore principale
       <input type="color" data-field="meta.accentColor"></label>
-    <button class="eb-btn eb-ghost" id="btn-logout"><i data-lucide="log-out"></i><span>Log out</span></button>
+    <button class="eb-btn eb-ghost" id="btn-logout"><i data-lucide="log-out"></i><span>Esci</span></button>
   </aside>
 
   <input type="file" id="file-input" accept="image/*" hidden>

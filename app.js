@@ -13,12 +13,84 @@ const set = (o, p, v) => {
   t[last] = v;
 };
 
+// ---- Languages ------------------------------------------------------
+const LANG_NAMES = {
+  en: 'English', it: 'Italiano', de: 'Deutsch', fr: 'Français', es: 'Español', nl: 'Nederlands',
+  pt: 'Português', pl: 'Polski', sv: 'Svenska', da: 'Dansk', no: 'Norsk', cs: 'Čeština',
+  ru: 'Русский', zh: '中文', ja: '日本語', ko: '한국어', ar: 'العربية', he: 'עברית'
+};
+// Country (from the visitor's location) -> language
+const COUNTRY_LANG = {
+  IT: 'it', SM: 'it', VA: 'it',
+  DE: 'de', AT: 'de', LI: 'de', CH: 'de',
+  FR: 'fr', BE: 'fr', LU: 'fr', MC: 'fr', SN: 'fr', CI: 'fr', MA: 'fr', TN: 'fr', DZ: 'fr',
+  ES: 'es', MX: 'es', AR: 'es', CO: 'es', CL: 'es', PE: 'es', VE: 'es', EC: 'es', UY: 'es', PY: 'es', BO: 'es', CR: 'es', PA: 'es', DO: 'es', GT: 'es', HN: 'es', SV: 'es', NI: 'es', CU: 'es',
+  NL: 'nl', SR: 'nl', PT: 'pt', BR: 'pt', AO: 'pt', MZ: 'pt', PL: 'pl', SE: 'sv', DK: 'da', NO: 'no', CZ: 'cs',
+  RU: 'ru', BY: 'ru', KZ: 'ru', CN: 'zh', TW: 'zh', HK: 'zh', JP: 'ja', KR: 'ko',
+  SA: 'ar', AE: 'ar', EG: 'ar', QA: 'ar', KW: 'ar', JO: 'ar', IL: 'he',
+  GB: 'en', IE: 'en', US: 'en', CA: 'en', AU: 'en', NZ: 'en', ZA: 'en', IN: 'en', SG: 'en'
+};
+
+let lang = 'it';
+const langs = () => (data.languages && data.languages.length ? data.languages : ['en']);
+const mainLang = () => (langs().includes(data.defaultLanguage) ? data.defaultLanguage : langs()[0]);
+const isTr = v => v && typeof v === 'object' && !Array.isArray(v);
+
+// Text in the current language, falling back to the main language
+function tx(path) {
+  const v = get(data, path);
+  if (isTr(v)) return v[lang] ?? v[mainLang()] ?? v.en ?? Object.values(v)[0] ?? '';
+  return v ?? '';
+}
+function needsTranslation(path) {
+  if (lang === mainLang()) return false;
+  const v = get(data, path);
+  if (isTr(v)) return !v[lang];
+  // Names, numbers, prices and contact details don't need translating
+  if (/(\.name|\.from|\.value|siteTitle|priceFrom|email|phone|cin|address)$/.test(path)) return false;
+  return /\p{L}{3}/u.test(String(v ?? ''));
+}
+// Save typed text into the language being edited
+function setText(path, value) {
+  const v = get(data, path);
+  if (isTr(v)) { v[lang] = value; return; }
+  if (lang === mainLang()) { set(data, path, value); return; }
+  set(data, path, { [mainLang()]: v ?? '', [lang]: value });
+}
+
+async function detectCountry() {
+  try {
+    const ctrl = new AbortController(); setTimeout(() => ctrl.abort(), 1500);
+    const r = await fetch('/api/geo', { signal: ctrl.signal });
+    if (r.ok) return (await r.json()).country || '';
+  } catch (_) {}
+  return '';
+}
+function pickLanguage(country) {
+  const ok = l => l && langs().includes(l);
+  let saved = ''; try { saved = localStorage.getItem('lang') || ''; } catch (_) {}
+  if (ok(saved)) return saved;                                   // visitor chose it before
+  const byCountry = COUNTRY_LANG[country];
+  if (ok(byCountry)) return byCountry;                           // visitor's location
+  for (const l of navigator.languages || [navigator.language]) { // phone/browser language
+    const code = String(l).slice(0, 2).toLowerCase();
+    if (ok(code)) return code;
+  }
+  return mainLang();
+}
+function setLang(l, remember) {
+  lang = l;
+  if (remember) { try { localStorage.setItem('lang', l); } catch (_) {} }
+  render();
+}
+
 const ICONS = {
   waves: 'Pool', wifi: 'Wi‑Fi', 'chef-hat': 'Kitchen', snowflake: 'Air con', 'thermometer-sun': 'Heating',
   car: 'Parking', 'washing-machine': 'Washer', laptop: 'Workspace', flame: 'BBQ / fire', tv: 'TV',
   coffee: 'Coffee', trees: 'Garden', umbrella: 'Beach', 'paw-print': 'Pets', bike: 'Bike', bath: 'Bath',
   'bed-double': 'Bed', mountain: 'View', sun: 'Terrace', baby: 'Baby', dumbbell: 'Gym',
-  'key-round': 'Self check-in', check: 'Other'
+  'key-round': 'Self check-in', sofa: 'Sofa / sofa bed', armchair: 'Living room', 'utensils-crossed': 'Dining',
+  wine: 'Wine', 'grape': 'Vineyards', 'cooking-pot': 'Cooking', 'shower-head': 'Shower', 'book-open': 'Books / reading', check: 'Other'
 };
 
 // Blank items used when the owner taps "+ Add"
@@ -28,7 +100,8 @@ const NEW_ITEM = {
   amenities: () => ({ icon: 'check', label: 'New amenity' }),
   reviews: () => ({ name: 'Guest', from: 'City', text: 'Write the review here.' }),
   rules: () => 'New rule',
-  faq: () => ({ question: 'New question?', answer: 'Answer.' })
+  faq: () => ({ question: 'New question?', answer: 'Answer.' }),
+  people: () => ({ name: 'Nome', phone: '+39 ' })
 };
 
 let data = {};
@@ -52,40 +125,43 @@ async function loadContent(fresh) {
 // ---------------------------------------------------------------------
 // Rendering
 // ---------------------------------------------------------------------
-function ctl(list, i, len) {
+function ctl(list, i, len, path) {
   if (!editing) return '';
-  return `<div class="ctl" data-list="${list}" data-i="${i}">
-    <button data-op="up" ${i === 0 ? 'disabled' : ''} title="Move earlier"><i data-lucide="arrow-left"></i></button>
-    <button data-op="down" ${i === len - 1 ? 'disabled' : ''} title="Move later"><i data-lucide="arrow-right"></i></button>
-    <button data-op="del" class="danger" title="Remove"><i data-lucide="trash-2"></i></button>
+  return `<div class="ctl" data-list="${path || list}" data-i="${i}">
+    <button data-op="up" ${i === 0 ? 'disabled' : ''} title="Sposta prima"><i data-lucide="arrow-left"></i></button>
+    <button data-op="down" ${i === len - 1 ? 'disabled' : ''} title="Sposta dopo"><i data-lucide="arrow-right"></i></button>
+    <button data-op="del" class="danger" title="Elimina"><i data-lucide="trash-2"></i></button>
   </div>`;
 }
 const addBtn = (list, label) => editing ? `<button class="add-btn" data-add="${list}"><i data-lucide="plus"></i> ${label}</button>` : '';
 
 function render() {
   const d = data;
-  document.title = d.meta?.siteTitle || 'Holiday home';
-  document.querySelector('meta[name="description"]').content = d.meta?.seoDescription || '';
+  document.title = tx('meta.siteTitle') || 'Holiday home';
+  document.querySelector('meta[name="description"]').content = tx('meta.seoDescription');
+  document.documentElement.lang = lang;
+  document.documentElement.dir = ['ar', 'he'].includes(lang) ? 'rtl' : 'ltr';
+  renderLanguageUI();
   document.documentElement.style.setProperty('--accent', d.meta?.accentColor || '#C4693D');
 
   // About text: paragraphs for visitors, one editable box for the owner
   $('about-body').innerHTML = editing
     ? `<div class="pre" data-text="about.body"></div>`
-    : (d.about?.body || '').split(/\n\s*\n/).map(p => `<p>${esc(p)}</p>`).join('');
+    : tx('about.body').split(/\n\s*\n/).map(p => `<p>${esc(p)}</p>`).join('');
 
   const stats = d.stats || [];
   $('stats').innerHTML = stats.map((s, i) =>
     `<div class="stat item">${ctl('stats', i, stats.length)}<b data-text="stats.${i}.value"></b><span data-text="stats.${i}.label"></span></div>`
-  ).join('') + addBtn('stats', 'Add');
+  ).join('') + addBtn('stats', 'Aggiungi');
 
   const photos = d.gallery || [];
   $('gallery-grid').innerHTML = photos.map((g, i) => `
     <figure class="g-item item reveal" data-i="${i}">
       ${ctl('gallery', i, photos.length)}
-      <img loading="lazy" data-src="gallery.${i}.image" alt="${esc(g.caption)}">
-      ${editing ? `<button class="photo-btn" data-photo="gallery.${i}.image"><i data-lucide="image"></i> Change</button>` : ''}
-      ${(g.caption || editing) ? `<figcaption data-text="gallery.${i}.caption"></figcaption>` : ''}
-    </figure>`).join('') + addBtn('gallery', 'Add photo');
+      <img loading="lazy" data-src="gallery.${i}.image" alt="${esc(tx(`gallery.${i}.caption`))}">
+      ${editing ? `<button class="photo-btn" data-photo="gallery.${i}.image"><i data-lucide="image"></i> Cambia</button>` : ''}
+      ${(tx(`gallery.${i}.caption`) || editing) ? `<figcaption data-text="gallery.${i}.caption"></figcaption>` : ''}
+    </figure>`).join('') + addBtn('gallery', 'Aggiungi foto');
 
   const am = d.amenities || [];
   $('amenities-list').innerHTML = am.map((a, i) => `
@@ -93,9 +169,9 @@ function render() {
       <i data-lucide="${esc(a.icon || 'check')}"></i><span data-text="amenities.${i}.label"></span>
       ${editing ? `<select class="icon-pick" data-field="amenities.${i}.icon">${Object.entries(ICONS).map(([v, l]) =>
         `<option value="${v}" ${v === a.icon ? 'selected' : ''}>${l}</option>`).join('')}</select>` : ''}
-    </li>`).join('') + addBtn('amenities', 'Add amenity');
+    </li>`).join('') + addBtn('amenities', 'Aggiungi servizio');
 
-  $('map').src = `https://maps.google.com/maps?q=${encodeURIComponent(d.location?.mapQuery || '')}&z=11&output=embed`;
+  $('map').src = `https://maps.google.com/maps?q=${encodeURIComponent(d.location?.mapQuery || '')}&z=11&output=embed&hl=${lang}`;
 
   const rv = d.reviews || [];
   $('reviews-list').innerHTML = rv.map((r, i) => `
@@ -103,28 +179,55 @@ function render() {
       <div class="stars">★★★★★</div>
       <p class="quote" data-text="reviews.${i}.text"></p>
       <div class="who"><b data-text="reviews.${i}.name"></b> · <span data-text="reviews.${i}.from"></span></div>
-    </div>`).join('') + addBtn('reviews', 'Add review');
+    </div>`).join('') + addBtn('reviews', 'Aggiungi recensione');
 
   const rules = d.rules || [];
   $('rules-list').innerHTML = rules.map((_, i) =>
     `<li class="item">${ctl('rules', i, rules.length)}<i data-lucide="check"></i><span data-text="rules.${i}"></span></li>`
-  ).join('') + addBtn('rules', 'Add rule');
+  ).join('') + addBtn('rules', 'Aggiungi regola');
 
   const faq = d.faq || [];
   $('faq-list').innerHTML = faq.map((f, i) => editing
     ? `<div class="faq-edit item">${ctl('faq', i, faq.length)}<b data-text="faq.${i}.question"></b><p data-text="faq.${i}.answer"></p></div>`
-    : `<details><summary>${esc(f.question)}</summary><p>${esc(f.answer)}</p></details>`
-  ).join('') + addBtn('faq', 'Add question');
+    : `<details><summary>${esc(tx(`faq.${i}.question`))}</summary><p>${esc(tx(`faq.${i}.answer`))}</p></details>`
+  ).join('') + addBtn('faq', 'Aggiungi domanda');
 
-  // Contact links
-  const em = d.contact?.email || '', ph = d.contact?.phone || '';
+  // Contacts: one card per person, with Call + WhatsApp buttons
+  const people = d.contact?.people || [];
+  const digits = n => String(n || '').replace(/[^\d+]/g, '');
+  $('people').innerHTML = people.map((pp, i) => `
+    <div class="person item">${ctl('people', i, people.length, 'contact.people')}
+      <div class="avatar">${esc((pp.name || '?').trim().charAt(0))}</div>
+      <b class="p-name" data-text="contact.people.${i}.name"></b>
+      <a class="p-phone" href="tel:${esc(digits(pp.phone))}" data-text="contact.people.${i}.phone"></a>
+      <div class="p-actions">
+        <a class="btn btn-sm" href="tel:${esc(digits(pp.phone))}"><i data-lucide="phone"></i><span data-text="labels.call"></span></a>
+        ${d.contact?.whatsapp === false ? '' : `<a class="btn btn-sm btn-wa" href="https://wa.me/${esc(digits(pp.phone).replace(/^\+/, ''))}" target="_blank" rel="noopener"><i data-lucide="message-circle"></i>WhatsApp</a>`}
+      </div>
+    </div>`).join('') + addBtn('people', 'Aggiungi contatto');
+  const em = d.contact?.email || '';
   $('contact-email').href = 'mailto:' + em;
-  $('contact-phone').href = 'tel:' + ph.replace(/\s/g, '');
-  document.querySelector('.dot').style.display = (em && ph) || editing ? '' : 'none';
+  $('contact-email-wrap').style.display = em || editing ? '' : 'none';
+
+  // Hide sections that have nothing in them (owner still sees them while editing)
+  const hide = (el, empty) => { el.style.display = empty && !editing ? 'none' : ''; };
+  hide($('reviews'), !rv.length);
+  hide($('rules-col'), !rules.length);
+  hide($('faq-col'), !faq.length);
+  hide($('faq'), !rules.length && !faq.length);
+  $('faq').classList.toggle('one-col', !editing && (!rules.length || !faq.length));
+  hide($('gallery'), !photos.length);
+  // Price is optional
+  document.querySelectorAll('.price-wrap').forEach(el => { el.style.display = d.booking?.priceFrom || editing ? '' : 'none'; });
+  // CIN (codice identificativo nazionale) in the footer
+  $('cin-line').style.display = d.meta?.cin || editing ? '' : 'none';
+  $('wa-toggle').checked = d.contact?.whatsapp !== false;
+  document.querySelector('.footer-addr').style.display = d.location?.address || editing ? '' : 'none';
 
   // Generic bindings
   document.querySelectorAll('[data-text]').forEach(el => {
-    el.textContent = get(d, el.dataset.text) ?? '';
+    el.textContent = tx(el.dataset.text);
+    el.classList.toggle('untranslated', editing && needsTranslation(el.dataset.text));
     if (editing) {
       el.contentEditable = 'plaintext-only';
       if (el.contentEditable !== 'plaintext-only') el.contentEditable = 'true';
@@ -133,12 +236,16 @@ function render() {
       el.removeAttribute('contenteditable');
     }
   });
-  document.querySelectorAll('[data-href]').forEach(el => { el.href = get(d, el.dataset.href) || '#'; });
+  document.querySelectorAll('[data-href]').forEach(el => {
+    const url = get(d, el.dataset.href) || '#contatti';
+    el.href = url;
+    if (/^https?:/i.test(url)) { el.target = '_blank'; el.rel = 'noopener'; } else { el.removeAttribute('target'); }
+  });
   document.querySelectorAll('[data-src]').forEach(el => {
     const src = get(d, el.dataset.src);
     if (src) { el.src = src; el.classList.remove('empty'); } else { el.removeAttribute('src'); el.classList.add('empty'); }
   });
-  document.querySelectorAll('[data-field]').forEach(el => { el.value = get(d, el.dataset.field) ?? ''; });
+  document.querySelectorAll('[data-field]').forEach(el => { const v = get(d, el.dataset.field); el.value = isTr(v) ? tx(el.dataset.field) : (v ?? ''); });
 
   if (window.lucide) lucide.createIcons();
   setupReveal();
@@ -160,8 +267,8 @@ function setupReveal() {
 function setupLightbox() {
   const lb = $('lightbox'), img = $('lb-img'), cap = $('lb-cap');
   let i = 0;
-  const photos = () => (data.gallery || []).filter(g => g.image);
-  const show = n => { const p = photos(); i = (n + p.length) % p.length; img.src = p[i].image; cap.textContent = p[i].caption || ''; };
+  const photos = () => (data.gallery || []).map((g, k) => ({ image: g.image, caption: tx(`gallery.${k}.caption`) })).filter(g => g.image);
+  const show = n => { const p = photos(); if (!p.length) return; i = (n + p.length) % p.length; img.src = p[i].image; cap.textContent = p[i].caption || ''; };
   const close = () => { lb.classList.remove('open'); document.body.style.overflow = ''; };
   $('gallery-grid').addEventListener('click', e => {
     if (editing) return;
@@ -193,7 +300,7 @@ function toast(msg, ms = 2600) {
 }
 function markDirty() {
   dirty = true;
-  $('edit-status').textContent = 'Unsaved changes';
+  $('edit-status').textContent = 'Modifiche non salvate';
   $('btn-save').classList.add('pulse');
 }
 
@@ -205,8 +312,9 @@ async function startEditing() {
   editing = true;
   document.body.classList.add('editing');
   data = await loadContent(true);
+  lang = mainLang(); // owner always starts in the main language
   render();
-  toast('Tap any text to change it. Tap Save when you\'re done.', 4000);
+  toast('Tocca un testo per modificarlo. Quando hai finito premi Salva.', 4000);
 }
 
 function setupEditor() {
@@ -216,21 +324,22 @@ function setupEditor() {
     const el = e.target.closest('[data-text]');
     if (el) {
       const path = el.dataset.text;
-      set(data, path, el.innerText.replace(/\n$/, ''));
-      document.querySelectorAll(`[data-text="${path}"]`).forEach(o => { if (o !== el) o.textContent = get(data, path); });
+      setText(path, el.innerText.replace(/\n$/, ''));
+      el.classList.remove('untranslated');
+      document.querySelectorAll(`[data-text="${path}"]`).forEach(o => { if (o !== el) { o.textContent = tx(path); o.classList.remove('untranslated'); } });
       markDirty();
       return;
     }
     const f = e.target.closest('[data-field]');
     if (f) {
-      set(data, f.dataset.field, f.value);
+      if (isTr(get(data, f.dataset.field))) setText(f.dataset.field, f.value); else set(data, f.dataset.field, f.value);
       markDirty();
       if (f.dataset.field === 'meta.accentColor') document.documentElement.style.setProperty('--accent', f.value);
     }
   });
   document.addEventListener('change', e => {
     const f = e.target.closest('[data-field]');
-    if (editing && f) { set(data, f.dataset.field, f.value); markDirty(); render(); }
+    if (editing && f && f.tagName === 'SELECT') { set(data, f.dataset.field, f.value); markDirty(); render(); }
   });
 
   // Single-line fields: Enter finishes editing instead of adding a line
@@ -250,16 +359,18 @@ function setupEditor() {
 
     const ctlBtn = e.target.closest('.ctl button');
     if (ctlBtn) {
-      const box = ctlBtn.closest('.ctl'); const list = data[box.dataset.list]; const i = +box.dataset.i;
+      const box = ctlBtn.closest('.ctl'); const list = get(data, box.dataset.list); const i = +box.dataset.i;
       const op = ctlBtn.dataset.op;
-      if (op === 'del') { if (!confirm('Remove this item?')) return; list.splice(i, 1); }
+      if (op === 'del') { if (!confirm('Eliminare questo elemento?')) return; list.splice(i, 1); }
       if (op === 'up' && i > 0) [list[i - 1], list[i]] = [list[i], list[i - 1]];
       if (op === 'down' && i < list.length - 1) [list[i + 1], list[i]] = [list[i], list[i + 1]];
       markDirty(); render(); return;
     }
     const add = e.target.closest('[data-add]');
     if (add) {
-      const k = add.dataset.add; (data[k] ??= []).push(NEW_ITEM[k]());
+      const k = add.dataset.add;
+      if (k === 'people') { data.contact ??= {}; (data.contact.people ??= []).push(NEW_ITEM.people()); }
+      else (data[k] ??= []).push(NEW_ITEM[k]());
       markDirty(); render();
       if (k === 'gallery') pickPhoto(`gallery.${data.gallery.length - 1}.image`);
       return;
@@ -270,16 +381,17 @@ function setupEditor() {
     if (img && !img.classList.contains('hero-img')) { pickPhoto(img.dataset.src); return; }
   });
 
+  $('wa-toggle').onchange = e => { data.contact ??= {}; data.contact.whatsapp = e.target.checked; markDirty(); render(); };
   $('btn-settings').onclick = () => $('drawer').classList.add('open');
   $('drawer-close').onclick = () => $('drawer').classList.remove('open');
   $('btn-preview').onclick = () => {
     const on = document.body.classList.toggle('previewing');
     editing = !on; render();
-    $('btn-preview').querySelector('span').textContent = on ? 'Back to editing' : 'Preview';
+    $('btn-preview').querySelector('span').textContent = on ? 'Torna a modificare' : 'Anteprima';
   };
   $('btn-save').onclick = save;
   $('btn-logout').onclick = () => {
-    if (dirty && !confirm('You have unsaved changes. Log out anyway?')) return;
+    if (dirty && !confirm('Hai modifiche non salvate. Uscire comunque?')) return;
     try { sessionStorage.removeItem('owner-pw'); } catch (_) {}
     dirty = false; location.href = '/';
   };
@@ -302,10 +414,10 @@ async function shrink(file, max = 2000) {
 }
 
 async function uploadPhoto(file) {
-  toast('Uploading photo…', 60000);
+  toast('Caricamento foto…', 60000);
   const blob = await shrink(file);
   const r = await api('/api/upload', { method: 'POST', headers: { 'Content-Type': blob.type || 'image/jpeg' }, body: blob });
-  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Upload failed');
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Caricamento non riuscito');
   return (await r.json()).url;
 }
 
@@ -314,22 +426,22 @@ $('file-input').addEventListener('change', async e => {
   try {
     const url = await uploadPhoto(file);
     set(data, photoTarget, url); markDirty(); render();
-    toast('Photo added — remember to Save');
+    toast('Foto aggiunta: ricordati di premere Salva');
   } catch (err) { toast('⚠️ ' + err.message, 5000); }
 });
 
 async function save() {
   const btn = $('btn-save'); btn.disabled = true;
-  $('edit-status').textContent = 'Saving…';
+  $('edit-status').textContent = 'Salvataggio…';
   try {
     const r = await api('/api/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Save failed');
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Salvataggio non riuscito');
     dirty = false;
     btn.classList.remove('pulse');
-    $('edit-status').textContent = 'Saved ✓ Live for everyone within a few seconds';
-    toast('Saved! Your website is updated.');
+    $('edit-status').textContent = 'Salvato ✓ Online per tutti tra pochi secondi';
+    toast('Salvato! Il sito è aggiornato.');
   } catch (err) {
-    $('edit-status').textContent = 'Not saved';
+    $('edit-status').textContent = 'Non salvato';
     toast('⚠️ ' + err.message, 5000);
   } finally { btn.disabled = false; }
 }
@@ -347,10 +459,44 @@ function showLogin() {
       $('login').classList.remove('open');
       startEditing();
     } else {
-      $('login-error').textContent = r && r.status === 401 ? 'Wrong password, try again.' : 'Could not reach the server.';
+      $('login-error').textContent = r && r.status === 401 ? 'Password errata, riprova.' : 'Impossibile contattare il server.';
     }
   };
 }
+
+// ---------------------------------------------------------------------
+// Language menus
+// ---------------------------------------------------------------------
+function renderLanguageUI() {
+  const list = langs();
+  $('lang').style.display = list.length > 1 ? '' : 'none';
+  $('lang-current').textContent = lang.toUpperCase();
+  $('lang-menu').innerHTML = list.map(l =>
+    `<button data-lang="${l}" class="${l === lang ? 'on' : ''}">${LANG_NAMES[l] || l}</button>`).join('');
+  $('edit-lang').innerHTML = list.map(l =>
+    `<option value="${l}" ${l === lang ? 'selected' : ''}>✎ ${LANG_NAMES[l] || l}${l === mainLang() ? ' (principale)' : ''}</option>`).join('');
+  $('lang-checks').innerHTML = Object.entries(LANG_NAMES).map(([l, n]) =>
+    `<label class="lc"><input type="checkbox" value="${l}" ${list.includes(l) ? 'checked' : ''}> ${n}</label>`).join('');
+  $('default-lang').innerHTML = list.map(l =>
+    `<option value="${l}" ${l === mainLang() ? 'selected' : ''}>${LANG_NAMES[l] || l}</option>`).join('');
+}
+
+$('lang-btn').addEventListener('click', e => { e.stopPropagation(); $('lang').classList.toggle('open'); });
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-lang]');
+  if (b) { e.preventDefault(); setLang(b.dataset.lang, !editing); }
+  if (!e.target.closest('#lang')) $('lang').classList.remove('open');
+});
+$('edit-lang').addEventListener('change', e => setLang(e.target.value, false));
+$('lang-checks').addEventListener('change', () => {
+  const picked = [...$('lang-checks').querySelectorAll('input:checked')].map(i => i.value);
+  if (!picked.length) { toast('Tieni almeno una lingua'); renderLanguageUI(); return; }
+  data.languages = picked;
+  if (!picked.includes(data.defaultLanguage)) data.defaultLanguage = picked[0];
+  if (!picked.includes(lang)) lang = mainLang();
+  markDirty(); render();
+});
+$('default-lang').addEventListener('change', e => { data.defaultLanguage = e.target.value; markDirty(); render(); });
 
 // ---------------------------------------------------------------------
 // Start
@@ -359,7 +505,9 @@ function showLogin() {
   onScroll();
   setupLightbox();
   setupEditor();
-  data = await loadContent(false);
+  const [content, country] = await Promise.all([loadContent(false), detectCountry()]);
+  data = content;
+  lang = pickLanguage(country);
   render();
 
   if (location.pathname.replace(/\/$/, '') === '/admin') {

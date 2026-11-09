@@ -188,7 +188,7 @@ body.editing:not(.previewing) [contenteditable] { outline: 1.5px dashed rgba(196
 body.editing:not(.previewing) [contenteditable]:hover { outline-color: var(--accent); }
 body.editing:not(.previewing) [contenteditable]:focus { outline: 2px solid var(--accent); background: rgba(255,255,255,.12); }
 .hero [contenteditable]:focus { background: rgba(0,0,0,.25) !important; }
-[contenteditable]:empty::before { content: "Tap to type…"; opacity: .5; }
+[contenteditable]:empty::before { content: "Scrivi qui…"; opacity: .5; }
 .pre { white-space: pre-wrap; color: var(--muted); font-size: 1.07rem; }
 body.editing:not(.previewing) img[data-src]:not(.hero-img) { cursor: pointer; }
 
@@ -260,3 +260,71 @@ body.editing:not(.previewing) .add-btn { display: inline-flex; }
   .toast { bottom: 90px; }
   .icon-pick { margin-right: 100px; }
 }
+
+/* =====================================================================
+   Languages
+   ===================================================================== */
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.lang { position: relative; }
+.lang-btn { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.14); color: inherit; border: 1px solid rgba(255,255,255,.35); border-radius: 999px; padding: 6px 12px; font: 600 .82rem var(--sans); cursor: pointer; backdrop-filter: blur(6px); transition: background .2s; }
+.nav.scrolled .lang-btn { background: transparent; border-color: var(--line); }
+.lang-btn:hover { background: rgba(255,255,255,.25); }
+.lang-btn svg { width: 15px; height: 15px; }
+.lang-menu { position: absolute; right: 0; top: calc(100% + 8px); min-width: 170px; background: #fff; color: var(--ink); border-radius: 14px; padding: 6px; box-shadow: 0 18px 40px -12px rgba(0,0,0,.3); opacity: 0; transform: translateY(-6px); pointer-events: none; transition: .2s; z-index: 70; }
+.lang.open .lang-menu { opacity: 1; transform: none; pointer-events: auto; }
+.lang-menu button { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 9px 12px; border-radius: 9px; font: .92rem var(--sans); cursor: pointer; color: var(--ink); }
+.lang-menu button:hover { background: var(--band); }
+.lang-menu button.on { font-weight: 600; color: var(--accent); }
+
+/* editing languages */
+.edit-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.edit-lang { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 7px 10px; font: 600 .85rem var(--sans); max-width: 170px; }
+.edit-lang option { color: #111; }
+body.editing:not(.previewing) [contenteditable].untranslated { outline: 2px dashed #e0a100; background: rgba(255, 210, 60, .16); }
+.lang-settings { background: var(--band); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.ls-title { font-weight: 600; font-size: .9rem; display: flex; flex-direction: column; gap: 4px; }
+.lang-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; }
+.lang-checks .lc { flex-direction: row !important; align-items: center; gap: 8px !important; font-weight: 500 !important; font-size: .88rem !important; }
+.lang-checks input { width: 16px; height: 16px; accent-color: var(--accent); }
+.drawer select { font: .95rem var(--sans); padding: 9px 10px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+.ls-hint { font-size: .82rem; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .edit-status { display: none; }
+  .edit-lang { max-width: 140px; }
+}
+body:not(.editing) .edit-only, body.previewing .edit-only { display: none !important; }
+
+/* ---- Contacts (booking by phone) ---- */
+.cta-final { padding: 100px 24px 110px; }
+.cta-final .note { font-size: 1rem; max-width: 46ch; margin: 0 auto 36px; }
+.people { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; max-width: 900px; margin: 0 auto; }
+.person { position: relative; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 28px 26px 24px; width: min(100%, 340px); display: flex; flex-direction: column; align-items: center; gap: 6px; box-shadow: 0 18px 40px -28px rgba(40,25,10,.35); transition: transform .3s; }
+.person:hover { transform: translateY(-3px); }
+.avatar { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--band); color: var(--accent); font: 500 1.5rem var(--serif); margin-bottom: 6px; }
+.p-name { font-family: var(--serif); font-weight: 500; font-size: 1.35rem; }
+.p-phone { color: var(--muted); text-decoration: none; font-size: 1.05rem; letter-spacing: .02em; }
+.p-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; justify-content: center; }
+.p-actions .btn svg { width: 16px; height: 16px; }
+.btn-wa { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+.btn-wa:hover { box-shadow: 0 10px 24px -10px rgba(0,0,0,.25); }
+.btn-wa svg { color: #25a35a; }
+.people .add-btn { width: min(100%, 340px); }
+.person .ctl { top: 10px; right: 10px; }
+#contact-email-wrap { margin: 28px 0 0; display: inline-flex; align-items: center; gap: 8px; }
+#contact-email-wrap svg { width: 16px; height: 16px; color: var(--accent); }
+.footer p + p { margin-top: 4px; }
+.two-col.one-col { grid-template-columns: minmax(0, 760px); justify-content: center; }
+.check-row { flex-direction: row !important; align-items: center; gap: 10px !important; }
+.check-row input { width: 18px; height: 18px; accent-color: var(--accent); }
+
+/* Real photos are portrait: keep the view (hills) in frame */
+.hero-img { object-position: center 38%; }
+.gallery { grid-auto-rows: 240px; }
+/* Gallery: only the first photo is big, so the shower photo doesn't dominate */
+.g-item:nth-child(6n+1) { grid-column: auto; grid-row: auto; }
+.g-item:first-child { grid-column: span 2; grid-row: span 2; }
+.g-item:nth-child(6n+4) { grid-column: auto; }
+.g-item:nth-child(4) { grid-column: span 2; }
+.mobile-bar > .btn:only-child, .mobile-bar .price-wrap[style*="none"] + .btn { flex: 1; justify-content: center; }
+@media (max-width: 900px) { .g-item:first-child { grid-row: span 2; } }

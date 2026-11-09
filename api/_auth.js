@@ -15,5 +15,5 @@ export const wait = ms => new Promise(r => setTimeout(r, ms));
 
 export async function denied(res) {
   await wait(800);
-  res.status(401).json({ error: 'Wrong password' });
+  res.status(401).json({ error: 'Password errata' });
 }

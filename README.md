@@ -8,6 +8,15 @@ The owner goes to **yoursite.com/admin**, types the password, and edits the live
 - **Settings**: booking link, price, map location, email, phone, Google description, brand colour.
 - **Preview** shows the page as guests see it. **Save** publishes — live for everyone within ~10 seconds.
 
+### Languages
+The site ships in English, Italian, German, French and Spanish. Visitors automatically get the language of the
+country they're in (falling back to their phone's language, then the main language), and can switch with the
+globe button. Their choice is remembered.
+
+The owner can turn languages on/off (18 available) and choose the main language in **Settings**. To translate,
+pick a language in the black bar at the top and type over the text. Text that isn't translated yet has a yellow
+outline and shows in the main language until it is.
+
 Every save is kept as a backup (last 30) in Vercel Blob, so nothing is ever lost.
 
 ## Setup (≈10 minutes, free Hobby plan)
@@ -26,7 +35,7 @@ Until the first Save, the site shows the starter content from `content/site.json
 
 ## Files
 - `index.html`, `styles.css`, `app.js` — the site and the on-page editor
-- `api/` — tiny serverless functions: `content` (read), `save`, `upload`, `login`
+- `api/` — tiny serverless functions: `content` (read), `save`, `upload`, `login`, `geo` (visitor's country)
 - `content/site.json` — starter content
 
 ## Change the password

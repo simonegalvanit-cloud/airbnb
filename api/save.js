@@ -9,10 +9,10 @@ export default async function handler(req, res) {
 
   const data = req.body;
   if (!data || typeof data !== 'object' || Array.isArray(data)) {
-    return res.status(400).json({ error: 'Invalid content' });
+    return res.status(400).json({ error: 'Contenuto non valido' });
   }
   const body = JSON.stringify(data, null, 2);
-  if (body.length > 1_000_000) return res.status(413).json({ error: 'Content too large' });
+  if (body.length > 1_000_000) return res.status(413).json({ error: 'Contenuto troppo grande' });
 
   try {
     const stamp = String(Date.now()).padStart(15, '0');
