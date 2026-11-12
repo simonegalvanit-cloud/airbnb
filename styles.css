@@ -380,3 +380,10 @@ body.editing .cookie { display: none; }
 }
 body.editing .info-item { padding-top: 48px; }
 .edit-lang { max-width: 210px !important; }
+
+/* Amenities while editing: label on top, icon menu on its own line */
+body.editing:not(.previewing) .amenities li { flex-wrap: wrap; align-items: center; padding: 50px 18px 16px; row-gap: 12px; }
+body.editing:not(.previewing) .amenities li > span { flex: 1 1 0; min-width: 0; }
+body.editing:not(.previewing) .amenities .icon-pick { flex: 1 1 100%; margin: 0; width: 100%; max-width: none; padding: 6px 8px; }
+body.editing:not(.previewing) .amenities .ctl { top: 10px; right: 10px; transform: none; }
+.icon-pick-label { display: none; }

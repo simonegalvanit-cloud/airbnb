@@ -156,14 +156,26 @@ let password = '';
 // ---------------------------------------------------------------------
 // Loading
 // ---------------------------------------------------------------------
+// Content saved before a new feature existed lacks its texts: fill any missing
+// field from the starter content, without touching what the owner has changed.
+const isObj = v => v && typeof v === 'object' && !Array.isArray(v);
+function withDefaults(saved, def) {
+  if (!isObj(saved) || !isObj(def)) return saved === undefined ? def : saved;
+  const out = { ...saved };
+  for (const k of Object.keys(def)) out[k] = k in saved ? withDefaults(saved[k], def[k]) : def[k];
+  return out;
+}
+
 async function loadContent(fresh) {
+  const defaultsP = fetch('/content/site.json', { cache: 'no-cache' }).then(r => r.json()).catch(() => ({}));
+  let saved = null;
   try {
     const r = await fetch('/api/content' + (fresh ? '?t=' + Date.now() : ''), { cache: fresh ? 'no-store' : 'default' });
-    if (r.ok) return await r.json();
+    if (r.ok) saved = await r.json();
   } catch (_) { /* fall through */ }
+  const defaults = await defaultsP;
   // Nothing saved yet (or running locally): use the starter content
-  const r = await fetch('/content/site.json', { cache: 'no-cache' });
-  return r.json();
+  return saved ? withDefaults(saved, defaults) : defaults;
 }
 
 // ---------------------------------------------------------------------
