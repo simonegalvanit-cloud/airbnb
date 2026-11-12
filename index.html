@@ -45,12 +45,18 @@
     }
   }
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" href="/fonts/fraunces-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts/fonts.css">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/effects.css">
 </head>
 <body>
+  <div class="scroll-progress" id="scroll-progress"></div>
   <!-- ===== Owner toolbar (only visible at /admin after login) ===== -->
   <div class="edit-bar" id="edit-bar">
     <div class="edit-left">
@@ -137,9 +143,27 @@
         <p class="eyebrow" data-text="labels.locationEyebrow"></p>
         <h2 data-text="location.heading"></h2>
         <p class="prose-p" data-text="location.body"></p>
-        <p class="edit-only edit-hint">Map location is in <b>Settings</b>.</p>
+        <p class="edit-only edit-hint">La posizione sulla mappa si cambia in <b>Impostazioni</b>.</p>
       </div>
-      <div class="map reveal"><iframe id="map" loading="lazy" title="Map"></iframe></div>
+      <div class="map reveal" id="map-box">
+        <iframe id="map" loading="lazy" title="Map"></iframe>
+        <div class="map-consent" id="map-consent">
+          <i data-lucide="map-pin"></i>
+          <p data-text="labels.mapConsent"></p>
+          <button class="btn btn-sm" id="map-load"><span data-text="labels.mapLoad"></span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="info">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow" data-text="labels.infoEyebrow"></p>
+          <h2 data-text="labels.infoTitle"></h2>
+          <p class="edit-only edit-hint info-hint">Compilate solo le voci che vi servono: quelle lasciate vuote <b>non compaiono</b> ai visitatori. Potete anche eliminarle, riordinarle o aggiungerne di nuove.</p>
+        </div>
+        <div class="info-grid" id="info-list"></div>
+      </div>
     </section>
 
     <section class="band" id="reviews">
@@ -178,9 +202,28 @@
 
   <footer class="footer">
     <p class="footer-addr" data-text="location.address"></p>
-    <p id="cin-line">CIN: <span data-text="meta.cin"></span></p>
+    <p id="cin-line" class="codes"><span id="cin-wrap">CIN: <span data-text="meta.cin"></span></span><span id="codes-sep" class="sep">·</span><span id="cir-wrap">CIR: <span data-text="meta.cir"></span></span></p>
     <p data-text="footer.text"></p>
+    <p class="footer-links"><a href="#" id="footer-privacy" data-text="labels.privacyLink"></a><span class="sep">·</span><a href="#" id="footer-cookies" data-text="labels.cookieSettings"></a></p>
   </footer>
+
+  <!-- Cookie banner (first visit) -->
+  <div class="cookie" id="cookie" role="dialog" aria-live="polite">
+    <p><span data-text="labels.cookieText"></span> <a href="#" class="privacy-open" data-text="labels.privacyLink"></a></p>
+    <div class="cookie-actions">
+      <button class="btn-ghost" id="cookie-reject"><span data-text="labels.cookieReject"></span></button>
+      <button class="btn btn-sm" id="cookie-accept"><span data-text="labels.cookieAccept"></span></button>
+    </div>
+  </div>
+
+  <!-- Privacy policy -->
+  <div class="modal" id="privacy">
+    <div class="modal-card privacy-card">
+      <button class="lb-btn drawer-close privacy-close" id="privacy-close" aria-label="Close"><i data-lucide="x"></i></button>
+      <h3 data-text="labels.privacyLink"></h3>
+      <div class="privacy-body" id="privacy-body"></div>
+    </div>
+  </div>
 
   <div class="mobile-bar">
     <div class="price-wrap"><strong data-text="booking.priceFrom"></strong> <span>/ <span data-text="booking.priceUnit"></span></span></div>
@@ -223,6 +266,8 @@
       <input type="text" data-field="meta.siteTitle"></label>
     <label>CIN <small>Codice Identificativo Nazionale, mostrato in fondo alla pagina</small>
       <input type="text" data-field="meta.cin" placeholder="IT004…"></label>
+    <label>CIR <small>Codice Identificativo Regionale (Piemonte), mostrato accanto al CIN</small>
+      <input type="text" data-field="meta.cir" placeholder="004…"></label>
     <label>Indirizzo
       <input type="text" data-field="location.address"></label>
     <label>Posizione sulla mappa <small>Indirizzo o nome del paese</small>
@@ -236,6 +281,10 @@
     <label class="check-row"><input type="checkbox" id="wa-toggle"> Mostra il pulsante WhatsApp</label>
     <label>Descrizione per Google <small>Il testo sotto il nome nei risultati di ricerca</small>
       <textarea rows="3" data-field="meta.seoDescription"></textarea></label>
+    <label>Testo del banner cookie
+      <textarea rows="3" data-field="labels.cookieText"></textarea></label>
+    <label>Informativa privacy <small>Testo mostrato cliccando "Privacy" in fondo alla pagina. Lasciate una riga vuota tra i paragrafi. Si modifica nella lingua scelta nella barra nera.</small>
+      <textarea rows="8" data-field="privacy.text"></textarea></label>
     <label class="color-row">Colore principale
       <input type="color" data-field="meta.accentColor"></label>
     <button class="eb-btn eb-ghost" id="btn-logout"><i data-lucide="log-out"></i><span>Esci</span></button>
@@ -244,7 +293,8 @@
   <input type="file" id="file-input" accept="image/*" hidden>
   <div class="toast" id="toast"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="/vendor/lucide.min.js"></script>
+  <script src="/effects.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>

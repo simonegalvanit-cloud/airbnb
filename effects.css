@@ -1,0 +1,94 @@
+/* =====================================================================
+   Effects & animations (visitors only — switched off while editing and
+   for people who prefer reduced motion)
+   ===================================================================== */
+
+/* Scroll progress line */
+.scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 100%; z-index: 95; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
+body.editing .scroll-progress { display: none; }
+
+/* Buttons: base for shine + ripple */
+.btn { position: relative; overflow: hidden; isolation: isolate; transition: transform .25s, box-shadow .25s, filter .25s, translate .35s cubic-bezier(.2,.7,.2,1); }
+.btn > * { position: relative; z-index: 1; }
+.ripple { position: absolute; border-radius: 50%; pointer-events: none; background: rgba(255,255,255,.45); transform: scale(0); animation: ripple .65s ease-out forwards; z-index: 0; }
+.btn-wa .ripple, .btn-ghost .ripple { background: rgba(0,0,0,.08); }
+@keyframes ripple { to { transform: scale(1); opacity: 0; } }
+.btn:active { transform: scale(.97); }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Light sweep across buttons on hover */
+  .btn::after { content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 45%; z-index: 0; pointer-events: none;
+    background: linear-gradient(105deg, transparent, rgba(255,255,255,.38), transparent); transform: skewX(-18deg); transition: none; }
+  @media (hover: hover) {
+    .btn:hover::after { left: 130%; transition: left .75s cubic-bezier(.2,.7,.2,1); }
+  }
+  .btn-wa::after { background: linear-gradient(105deg, transparent, rgba(37,163,90,.14), transparent); }
+
+  /* Gentle "breathing" halo on the main booking button */
+  .hero .btn-lg { animation: halo 3.2s ease-out 2.4s infinite; }
+  @keyframes halo {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+    70%, 100% { box-shadow: 0 0 0 18px color-mix(in srgb, var(--accent) 0%, transparent); }
+  }
+
+  /* Call buttons: pulse + ringing phone */
+  .p-actions .btn:not(.btn-wa) { animation: halo 2.6s ease-out infinite; }
+  .p-actions .btn:not(.btn-wa) svg { transform-origin: 50% 60%; animation: ring 4s ease-in-out infinite; }
+  .person:nth-child(2) .p-actions .btn:not(.btn-wa) { animation-delay: 1.3s; }
+  .person:nth-child(2) .p-actions .btn:not(.btn-wa) svg { animation-delay: 2s; }
+  @keyframes ring {
+    0%, 70%, 100% { transform: rotate(0); }
+    72% { transform: rotate(-18deg); } 74% { transform: rotate(16deg); } 76% { transform: rotate(-14deg); }
+    78% { transform: rotate(12deg); } 80% { transform: rotate(-8deg); } 82% { transform: rotate(6deg); } 84% { transform: rotate(0); }
+  }
+  .btn-wa:hover svg { animation: pop .5s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.3) rotate(-8deg); } 100% { transform: scale(1); } }
+
+  /* Contact cards */
+  .person { transition: transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .45s, border-color .45s; }
+  @media (hover: hover) {
+    .person:hover { transform: translateY(-6px); border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); box-shadow: 0 28px 50px -28px color-mix(in srgb, var(--accent) 60%, transparent); }
+    .person:hover .avatar { animation: wobble .7s cubic-bezier(.3,1.5,.5,1); }
+  }
+  @keyframes wobble { 0% { transform: scale(1); } 40% { transform: scale(1.15) rotate(-6deg); } 100% { transform: scale(1); } }
+
+  /* Hero title: words rise in one by one */
+  .w { display: inline-block; opacity: 0; transform: translateY(.45em); filter: blur(8px); animation: wordIn .9s cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes wordIn { to { opacity: 1; transform: none; filter: blur(0); } }
+
+  /* Photos fade in softly once loaded */
+  .g-item img, .about-img { opacity: 0; transform: scale(1.04); transition: opacity .9s ease, transform 1.2s cubic-bezier(.2,.7,.2,1); }
+  .g-item img.loaded, .about-img.loaded { opacity: 1; transform: none; }
+  @media (hover: hover) { .g-item:hover img.loaded { transform: scale(1.06); } }
+
+  /* Amenities & info cards: icon bounce on hover */
+  @media (hover: hover) {
+    .amenities li:hover svg, .info-item:hover > svg { animation: pop .5s cubic-bezier(.3,1.6,.5,1); }
+  }
+
+  /* Eyebrow: small line draws in front of section labels */
+  .section-head .eyebrow, #rules-col .eyebrow, #faq-col .eyebrow, .cta-final .eyebrow, .location .eyebrow { display: inline-flex; align-items: center; gap: 10px; }
+  .reveal .eyebrow::before { content: ""; width: 0; height: 1.5px; background: currentColor; transition: width .8s .25s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in .eyebrow::before { width: 26px; }
+
+  /* Lightbox: photo zooms in */
+  .lightbox img { transition: transform .45s cubic-bezier(.2,.7,.2,1), opacity .3s; }
+  .lightbox:not(.open) img { transform: scale(.92); opacity: 0; }
+  .lightbox img.swap { opacity: 0; transform: translateX(var(--dir, 0)) scale(.98); transition: none; }
+
+  /* Phone booking bar slides up after the cover */
+  @media (max-width: 900px) {
+    .mobile-bar { transform: translateY(110%); transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+    .mobile-bar.show { transform: none; }
+  }
+
+  /* Language menu */
+  .lang-menu button { transition: background .2s, padding .2s; }
+  .lang-menu button:hover { padding-left: 16px; }
+}
+
+/* Never animate while the owner is editing */
+body.editing .w { opacity: 1 !important; transform: none !important; filter: none !important; animation: none !important; }
+body.editing .btn, body.editing .btn svg { animation: none !important; }
+body.editing .g-item img, body.editing .about-img { opacity: 1 !important; transform: none !important; }
+body.editing .mobile-bar { transform: none; }

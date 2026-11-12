@@ -39,15 +39,15 @@ const isTr = v => v && typeof v === 'object' && !Array.isArray(v);
 // Text in the current language, falling back to the main language
 function tx(path) {
   const v = get(data, path);
-  if (isTr(v)) return v[lang] ?? v[mainLang()] ?? v.en ?? Object.values(v)[0] ?? '';
+  if (isTr(v)) return v[lang] || v[mainLang()] || v.en || Object.values(v).find(Boolean) || '';
   return v ?? '';
 }
 function needsTranslation(path) {
   if (lang === mainLang()) return false;
   const v = get(data, path);
-  if (isTr(v)) return !v[lang];
+  if (isTr(v)) return !v[lang] && !!v[mainLang()];
   // Names, numbers, prices and contact details don't need translating
-  if (/(\.name|\.from|\.value|siteTitle|priceFrom|email|phone|cin|address)$/.test(path)) return false;
+  if (/(\.name|\.from|\.value|siteTitle|priceFrom|email|phone|cin|cir|address)$/.test(path)) return false;
   return /\p{L}{3}/u.test(String(v ?? ''));
 }
 // Save typed text into the language being edited
@@ -87,12 +87,53 @@ function setLang(l, remember) {
 }
 
 const ICONS = {
-  waves: 'Pool', wifi: 'Wi‑Fi', 'chef-hat': 'Kitchen', snowflake: 'Air con', 'thermometer-sun': 'Heating',
-  car: 'Parking', 'washing-machine': 'Washer', laptop: 'Workspace', flame: 'BBQ / fire', tv: 'TV',
-  coffee: 'Coffee', trees: 'Garden', umbrella: 'Beach', 'paw-print': 'Pets', bike: 'Bike', bath: 'Bath',
-  'bed-double': 'Bed', mountain: 'View', sun: 'Terrace', baby: 'Baby', dumbbell: 'Gym',
-  'key-round': 'Self check-in', sofa: 'Sofa / sofa bed', armchair: 'Living room', 'utensils-crossed': 'Dining',
-  wine: 'Wine', 'grape': 'Vineyards', 'cooking-pot': 'Cooking', 'shower-head': 'Shower', 'book-open': 'Books / reading', check: 'Other'
+  'waves': 'Piscina',
+  'wifi': 'Wi‑Fi',
+  'chef-hat': 'Cucina',
+  'snowflake': 'Aria condizionata',
+  'thermometer-sun': 'Riscaldamento',
+  'car': 'Auto / parcheggio',
+  'washing-machine': 'Lavatrice',
+  'laptop': 'Lavoro / scrivania',
+  'flame': 'Stufa / camino / barbecue',
+  'tv': 'TV',
+  'coffee': 'Caffè',
+  'trees': 'Giardino',
+  'umbrella': 'Ombrellone',
+  'paw-print': 'Animali',
+  'bike': 'Bici',
+  'bath': 'Vasca',
+  'bed-double': 'Letto matrimoniale',
+  'mountain': 'Vista / colline',
+  'sun': 'Sole / terrazza',
+  'baby': 'Bambini',
+  'dumbbell': 'Palestra',
+  'key-round': 'Chiavi / self check-in',
+  'sofa': 'Divano',
+  'armchair': 'Poltrona / soggiorno',
+  'utensils-crossed': 'Pranzo',
+  'wine': 'Vino',
+  'grape': 'Vigneti',
+  'cooking-pot': 'Pentole',
+  'shower-head': 'Doccia',
+  'book-open': 'Libri / lettura',
+  'clock': 'Orario',
+  'log-in': 'Arrivo (check-in)',
+  'log-out': 'Partenza (check-out)',
+  'cigarette-off': 'Vietato fumare',
+  'receipt': 'Tasse / ricevuta',
+  'train-front': 'Treno',
+  'plane': 'Aereo',
+  'bus': 'Autobus',
+  'volume-x': 'Silenzio / niente feste',
+  'languages': 'Lingue',
+  'info': 'Informazione',
+  'map-pin': 'Luogo',
+  'bed': 'Biancheria / letto',
+  'shopping-basket': 'Negozi',
+  'accessibility': 'Accessibilità',
+  'circle-parking': 'Parcheggio',
+  'check': 'Altro (spunta)'
 };
 
 // Blank items used when the owner taps "+ Add"
@@ -103,7 +144,8 @@ const NEW_ITEM = {
   reviews: () => ({ name: 'Guest', from: 'City', text: 'Write the review here.' }),
   rules: () => 'New rule',
   faq: () => ({ question: 'New question?', answer: 'Answer.' }),
-  people: () => ({ name: 'Nome', phone: '+39 ' })
+  people: () => ({ name: 'Nome', phone: '+39 ' }),
+  info: () => ({ icon: 'info', label: {}, value: {} })
 };
 
 let data = {};
@@ -160,7 +202,7 @@ function render() {
   $('gallery-grid').innerHTML = photos.map((g, i) => `
     <figure class="g-item item reveal" data-i="${i}">
       ${ctl('gallery', i, photos.length)}
-      <img loading="lazy" data-src="gallery.${i}.image" alt="${esc(tx(`gallery.${i}.caption`))}">
+      <img loading="lazy" decoding="async" data-src="gallery.${i}.image" ${g.thumb ? `srcset="${esc(g.thumb)} 825w, ${esc(g.image)} 1500w" sizes="${i === 0 || i === 3 ? '(max-width: 900px) 100vw, 700px' : '(max-width: 900px) 50vw, 340px'}"` : ''} alt="${esc(tx(`gallery.${i}.caption`))}">
       ${editing ? `<button class="photo-btn" data-photo="gallery.${i}.image"><i data-lucide="image"></i> Cambia</button>` : ''}
       ${(tx(`gallery.${i}.caption`) || editing) ? `<figcaption data-text="gallery.${i}.caption"></figcaption>` : ''}
     </figure>`).join('') + addBtn('gallery', 'Aggiungi foto');
@@ -173,7 +215,25 @@ function render() {
         `<option value="${v}" ${v === a.icon ? 'selected' : ''}>${l}</option>`).join('')}</select>` : ''}
     </li>`).join('') + addBtn('amenities', 'Aggiungi servizio');
 
-  $('map').src = `https://maps.google.com/maps?q=${encodeURIComponent(d.location?.mapQuery || '')}&z=11&output=embed&hl=${lang}`;
+  renderMap();
+
+  // Useful info: owners fill in what they want; empty items are hidden from visitors
+  const info = d.info || [];
+  const shown = info.map((_, i) => i).filter(i => editing || tx(`info.${i}.value`).trim());
+  $('info-list').innerHTML = shown.map(i => `
+    <div class="info-item item reveal">${ctl('info', i, info.length)}
+      <i data-lucide="${esc(info[i].icon || 'info')}"></i>
+      <div class="info-text">
+        <b data-text="info.${i}.label"></b>
+        <p data-text="info.${i}.value"></p>
+      </div>
+      ${editing ? `<select class="icon-pick" data-field="info.${i}.icon">${Object.entries(ICONS).map(([v, l]) =>
+        `<option value="${v}" ${v === info[i].icon ? 'selected' : ''}>${l}</option>`).join('')}</select>` : ''}
+    </div>`).join('') + addBtn('info', 'Aggiungi informazione');
+  $('info').style.display = shown.length || editing ? '' : 'none';
+
+  // Privacy text
+  $('privacy-body').innerHTML = tx('privacy.text').split(/\n\s*\n/).map(p => `<p>${esc(p).replace(/\n/g, '<br>')}</p>`).join('');
 
   const rv = d.reviews || [];
   $('reviews-list').innerHTML = rv.map((r, i) => `
@@ -222,7 +282,10 @@ function render() {
   // Price is optional
   document.querySelectorAll('.price-wrap').forEach(el => { el.style.display = d.booking?.priceFrom || editing ? '' : 'none'; });
   // CIN (codice identificativo nazionale) in the footer
-  $('cin-line').style.display = d.meta?.cin || editing ? '' : 'none';
+  $('cin-wrap').style.display = d.meta?.cin || editing ? '' : 'none';
+  $('cir-wrap').style.display = d.meta?.cir || editing ? '' : 'none';
+  $('codes-sep').style.display = (d.meta?.cin && d.meta?.cir) || editing ? '' : 'none';
+  $('cin-line').style.display = d.meta?.cin || d.meta?.cir || editing ? '' : 'none';
   $('wa-toggle').checked = d.contact?.whatsapp !== false;
   document.querySelector('.footer-addr').style.display = d.location?.address || editing ? '' : 'none';
 
@@ -250,6 +313,7 @@ function render() {
   document.querySelectorAll('[data-field]').forEach(el => { const v = get(d, el.dataset.field); el.value = isTr(v) ? tx(el.dataset.field) : (v ?? ''); });
 
   if (window.lucide) lucide.createIcons();
+  if (window.onRendered) window.onRendered(editing);
   setupReveal();
 }
 
@@ -404,30 +468,57 @@ function setupEditor() {
 let photoTarget = null;
 function pickPhoto(path) { photoTarget = path; $('file-input').value = ''; $('file-input').click(); }
 
-async function shrink(file, max = 2000) {
+// Resize in the browser with good quality: halve step by step (avoids a blurry,
+// jagged result when shrinking a 4000px phone photo in one go), then sharpen a little.
+async function shrink(file, max = 2000, sharpen = 0) {
   try {
-    const bmp = await createImageBitmap(file);
-    const scale = Math.min(1, max / Math.max(bmp.width, bmp.height));
-    const c = document.createElement('canvas');
-    c.width = Math.round(bmp.width * scale); c.height = Math.round(bmp.height * scale);
-    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
-    return await new Promise(res => c.toBlob(res, 'image/jpeg', 0.85));
+    const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' });
+    const tw = Math.round(bmp.width * Math.min(1, max / Math.max(bmp.width, bmp.height)));
+    const th = Math.round(bmp.height * (tw / bmp.width));
+    let src = bmp, w = bmp.width, h = bmp.height;
+    while (w / 2 >= tw) {
+      const c = document.createElement('canvas'); c.width = Math.round(w / 2); c.height = Math.round(h / 2);
+      const x = c.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(src, 0, 0, c.width, c.height);
+      src = c; w = c.width; h = c.height;
+    }
+    const c = document.createElement('canvas'); c.width = tw; c.height = th;
+    const x = c.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(src, 0, 0, tw, th);
+    if (sharpen) sharpenCanvas(x, tw, th, sharpen);
+    return await new Promise(res => c.toBlob(res, 'image/jpeg', 0.86));
   } catch (_) { return file; }
 }
+function sharpenCanvas(ctx, w, h, amount) {
+  const img = ctx.getImageData(0, 0, w, h), d = img.data, o = new Uint8ClampedArray(d);
+  for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) {
+    const i = (y * w + x) * 4;
+    for (let k = 0; k < 3; k++) {
+      const blur = (o[i - 4 + k] + o[i + 4 + k] + o[i - w * 4 + k] + o[i + w * 4 + k]) / 4;
+      d[i + k] = o[i + k] + amount * (o[i + k] - blur);
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+}
 
-async function uploadPhoto(file) {
-  toast('Caricamento foto…', 60000);
-  const blob = await shrink(file);
+async function sendPhoto(blob) {
   const r = await api('/api/upload', { method: 'POST', headers: { 'Content-Type': blob.type || 'image/jpeg' }, body: blob });
   if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Caricamento non riuscito');
   return (await r.json()).url;
+}
+// Uploads the full photo (for full screen) and a smaller sharp copy (for the grid)
+async function uploadPhoto(file) {
+  toast('Caricamento foto…', 60000);
+  const [full, small] = await Promise.all([shrink(file, 2000), shrink(file, 1100, 0.35)]);
+  const [url, thumb] = await Promise.all([sendPhoto(full), sendPhoto(small)]);
+  return { url, thumb };
 }
 
 $('file-input').addEventListener('change', async e => {
   const file = e.target.files[0]; if (!file || !photoTarget) return;
   try {
-    const url = await uploadPhoto(file);
-    set(data, photoTarget, url); markDirty(); render();
+    const { url, thumb } = await uploadPhoto(file);
+    set(data, photoTarget, url);
+    if (/\.image$/.test(photoTarget)) set(data, photoTarget.replace(/\.image$/, '.thumb'), thumb);
+    markDirty(); render();
     toast('Foto aggiunta: ricordati di premere Salva');
   } catch (err) { toast('⚠️ ' + err.message, 5000); }
 });
@@ -503,6 +594,32 @@ $('lang-checks').addEventListener('change', () => {
 $('default-lang').addEventListener('change', e => { data.defaultLanguage = e.target.value; markDirty(); render(); });
 
 // ---------------------------------------------------------------------
+// Cookies: Google Maps is the only third-party content, loaded only with consent
+// ---------------------------------------------------------------------
+const CONSENT_KEY = 'cookie-consent-v1';
+function getConsent() { try { return localStorage.getItem(CONSENT_KEY) || ''; } catch (_) { return ''; } }
+function setConsent(v) { try { localStorage.setItem(CONSENT_KEY, v); } catch (_) {} hideBanner(); renderMap(); }
+function showBanner() { $('cookie').classList.add('show'); }
+function hideBanner() { $('cookie').classList.remove('show'); }
+function renderMap() {
+  const ok = getConsent() === 'all';
+  const url = `https://maps.google.com/maps?q=${encodeURIComponent(data.location?.mapQuery || '')}&z=11&output=embed&hl=${lang}`;
+  const frame = $('map');
+  if (ok) { if (frame.getAttribute('src') !== url) frame.setAttribute('src', url); }
+  else frame.removeAttribute('src');
+  $('map-box').classList.toggle('blocked', !ok);
+}
+$('cookie-accept').onclick = () => setConsent('all');
+$('cookie-reject').onclick = () => setConsent('necessary');
+$('map-load').onclick = () => setConsent('all');
+$('footer-cookies').onclick = e => { e.preventDefault(); showBanner(); };
+const openPrivacy = e => { e.preventDefault(); $('privacy').classList.add('open'); };
+$('footer-privacy').onclick = openPrivacy;
+document.querySelectorAll('.privacy-open').forEach(a => a.onclick = openPrivacy);
+$('privacy-close').onclick = () => $('privacy').classList.remove('open');
+$('privacy').addEventListener('click', e => { if (e.target.id === 'privacy') $('privacy').classList.remove('open'); });
+
+// ---------------------------------------------------------------------
 // Start
 // ---------------------------------------------------------------------
 (async function init() {
@@ -513,6 +630,7 @@ $('default-lang').addEventListener('change', e => { data.defaultLanguage = e.tar
   data = content;
   lang = pickLanguage(country);
   render();
+  if (!getConsent() && !IS_BOT && location.pathname.replace(/\/$/, '') !== '/admin') setTimeout(showBanner, 600);
 
   if (location.pathname.replace(/\/$/, '') === '/admin') {
     let saved = '';

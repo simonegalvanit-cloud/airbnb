@@ -15,7 +15,8 @@
       "de": "Gilda di Langa, Ferienwohnung in Roddi (CN): ganze Wohnung mit Doppelzimmer, offenem Wohnbereich mit Küche und Terrasse mit Blick auf die Langhe. Bis zu 4 Gäste.",
       "fr": "Gilda di Langa, location de vacances à Roddi (CN) : logement entier avec chambre double, séjour ouvert avec cuisine et terrasse avec vue sur les Langhe. Jusqu'à 4 personnes."
     },
-    "accentColor": "#8C3B3B"
+    "accentColor": "#8C3B3B",
+    "cir": ""
   },
   "labels": {
     "navHouse": {
@@ -131,6 +132,60 @@
       "en": "Call",
       "de": "Anrufen",
       "fr": "Appeler"
+    },
+    "infoEyebrow": {
+      "it": "Da sapere",
+      "en": "Good to know",
+      "de": "Gut zu wissen",
+      "fr": "Bon à savoir"
+    },
+    "infoTitle": {
+      "it": "Informazioni utili",
+      "en": "Useful information",
+      "de": "Nützliche Informationen",
+      "fr": "Informations utiles"
+    },
+    "mapConsent": {
+      "it": "La mappa è fornita da Google Maps, che può usare cookie di terze parti.",
+      "en": "The map is provided by Google Maps, which may use third-party cookies.",
+      "de": "Die Karte wird von Google Maps bereitgestellt, das Cookies von Drittanbietern verwenden kann.",
+      "fr": "La carte est fournie par Google Maps, qui peut utiliser des cookies tiers."
+    },
+    "mapLoad": {
+      "it": "Mostra la mappa",
+      "en": "Show the map",
+      "de": "Karte anzeigen",
+      "fr": "Afficher la carte"
+    },
+    "cookieText": {
+      "it": "Usiamo solo cookie tecnici necessari al sito. La mappa di Google Maps viene caricata solo se accetti.",
+      "en": "We only use technical cookies needed for the site. The Google Maps map loads only if you accept.",
+      "de": "Wir verwenden nur technisch notwendige Cookies. Die Google-Maps-Karte wird nur geladen, wenn Sie zustimmen.",
+      "fr": "Nous n'utilisons que des cookies techniques nécessaires au site. La carte Google Maps ne se charge que si vous acceptez."
+    },
+    "cookieAccept": {
+      "it": "Accetta tutti",
+      "en": "Accept all",
+      "de": "Alle akzeptieren",
+      "fr": "Tout accepter"
+    },
+    "cookieReject": {
+      "it": "Solo necessari",
+      "en": "Necessary only",
+      "de": "Nur notwendige",
+      "fr": "Nécessaires uniquement"
+    },
+    "cookieSettings": {
+      "it": "Preferenze cookie",
+      "en": "Cookie preferences",
+      "de": "Cookie-Einstellungen",
+      "fr": "Préférences cookies"
+    },
+    "privacyLink": {
+      "it": "Privacy",
+      "en": "Privacy",
+      "de": "Datenschutz",
+      "fr": "Confidentialité"
     }
   },
   "hero": {
@@ -227,7 +282,8 @@
       "de": "Gilda di Langa ist eine ganze Dachgeschosswohnung unter einem Holzdach mit sichtbaren Balken: ein Schlafzimmer mit Doppelbett, ein offener Wohnbereich mit Küche, Essbereich, Schlafsofa und einer Leseecke mit Pelletofen, ein Bad mit Dusche und eine Terrasse mit Blick auf die Hügel der Langhe.\n\nSie bietet Platz für bis zu 4 Personen und ist der ideale Ausgangspunkt, um die Langhe mit ihren Weinbergen, Kellereien und Dörfern zu entdecken – nur wenige Minuten von Alba entfernt.",
       "fr": "Gilda di Langa est un logement entier au dernier étage, sous une charpente en bois apparente : une chambre avec lit double, un séjour ouvert avec cuisine, coin repas, canapé-lit et coin lecture avec poêle à granulés, une salle de bain avec douche et une terrasse avec vue sur les collines des Langhe.\n\nIl accueille jusqu'à 4 personnes et constitue un point de départ idéal pour découvrir les Langhe, leurs vignobles, caves et villages, à quelques minutes d'Alba."
     },
-    "image": "/images/gilda/soggiorno.jpg"
+    "image": "/images/gilda/soggiorno.jpg",
+    "thumb": "/images/gilda/thumb/soggiorno.jpg"
   },
   "gallery": [
     {
@@ -237,7 +293,8 @@
         "en": "The terrace overlooking the Langhe",
         "de": "Die Terrasse mit Blick auf die Langhe",
         "fr": "La terrasse avec vue sur les Langhe"
-      }
+      },
+      "thumb": "/images/gilda/thumb/terrazza.jpg"
     },
     {
       "image": "/images/gilda/soggiorno.jpg",
@@ -246,7 +303,8 @@
         "en": "Open-plan living room",
         "de": "Offener Wohnbereich",
         "fr": "Séjour ouvert"
-      }
+      },
+      "thumb": "/images/gilda/thumb/soggiorno.jpg"
     },
     {
       "image": "/images/gilda/camera.jpg",
@@ -255,7 +313,8 @@
         "en": "Double bedroom",
         "de": "Doppelzimmer",
         "fr": "Chambre double"
-      }
+      },
+      "thumb": "/images/gilda/thumb/camera.jpg"
     },
     {
       "image": "/images/gilda/cucina.jpg",
@@ -264,7 +323,8 @@
         "en": "Kitchen",
         "de": "Küche",
         "fr": "Cuisine"
-      }
+      },
+      "thumb": "/images/gilda/thumb/cucina.jpg"
     },
     {
       "image": "/images/gilda/divano-letto.jpg",
@@ -273,7 +333,8 @@
         "en": "Sofa bed",
         "de": "Schlafsofa",
         "fr": "Canapé-lit"
-      }
+      },
+      "thumb": "/images/gilda/thumb/divano-letto.jpg"
     },
     {
       "image": "/images/gilda/angolo-lettura.jpg",
@@ -282,7 +343,8 @@
         "en": "Reading corner with stove",
         "de": "Leseecke mit Ofen",
         "fr": "Coin lecture avec poêle"
-      }
+      },
+      "thumb": "/images/gilda/thumb/angolo-lettura.jpg"
     },
     {
       "image": "/images/gilda/bagno-doccia.jpg",
@@ -291,7 +353,8 @@
         "en": "Bathroom with shower",
         "de": "Bad mit Dusche",
         "fr": "Salle de bain avec douche"
-      }
+      },
+      "thumb": "/images/gilda/thumb/bagno-doccia.jpg"
     },
     {
       "image": "/images/gilda/bagno-lavabo.jpg",
@@ -300,7 +363,8 @@
         "en": "Bathroom",
         "de": "Badezimmer",
         "fr": "Salle de bain"
-      }
+      },
+      "thumb": "/images/gilda/thumb/bagno-lavabo.jpg"
     }
   ],
   "amenities": [
@@ -483,6 +547,154 @@
       "en": "© Gilda di Langa · Holiday apartment",
       "de": "© Gilda di Langa · Ferienwohnung",
       "fr": "© Gilda di Langa · Location de vacances"
+    }
+  },
+  "info": [
+    {
+      "icon": "log-in",
+      "label": {
+        "it": "Check-in",
+        "en": "Check-in",
+        "de": "Check-in",
+        "fr": "Arrivée"
+      },
+      "value": {}
+    },
+    {
+      "icon": "log-out",
+      "label": {
+        "it": "Check-out",
+        "en": "Check-out",
+        "de": "Check-out",
+        "fr": "Départ"
+      },
+      "value": {}
+    },
+    {
+      "icon": "wifi",
+      "label": {
+        "it": "Wi‑Fi",
+        "en": "Wi‑Fi",
+        "de": "WLAN",
+        "fr": "Wi‑Fi"
+      },
+      "value": {}
+    },
+    {
+      "icon": "car",
+      "label": {
+        "it": "Parcheggio",
+        "en": "Parking",
+        "de": "Parken",
+        "fr": "Stationnement"
+      },
+      "value": {}
+    },
+    {
+      "icon": "paw-print",
+      "label": {
+        "it": "Animali",
+        "en": "Pets",
+        "de": "Haustiere",
+        "fr": "Animaux"
+      },
+      "value": {}
+    },
+    {
+      "icon": "cigarette-off",
+      "label": {
+        "it": "Fumo",
+        "en": "Smoking",
+        "de": "Rauchen",
+        "fr": "Tabac"
+      },
+      "value": {}
+    },
+    {
+      "icon": "volume-x",
+      "label": {
+        "it": "Feste ed eventi",
+        "en": "Parties and events",
+        "de": "Partys und Veranstaltungen",
+        "fr": "Fêtes et événements"
+      },
+      "value": {}
+    },
+    {
+      "icon": "bed",
+      "label": {
+        "it": "Biancheria e asciugamani",
+        "en": "Bed linen and towels",
+        "de": "Bettwäsche und Handtücher",
+        "fr": "Linge de lit et serviettes"
+      },
+      "value": {}
+    },
+    {
+      "icon": "snowflake",
+      "label": {
+        "it": "Aria condizionata",
+        "en": "Air conditioning",
+        "de": "Klimaanlage",
+        "fr": "Climatisation"
+      },
+      "value": {}
+    },
+    {
+      "icon": "thermometer-sun",
+      "label": {
+        "it": "Riscaldamento",
+        "en": "Heating",
+        "de": "Heizung",
+        "fr": "Chauffage"
+      },
+      "value": {}
+    },
+    {
+      "icon": "baby",
+      "label": {
+        "it": "Bambini e culla",
+        "en": "Children and cot",
+        "de": "Kinder und Babybett",
+        "fr": "Enfants et lit bébé"
+      },
+      "value": {}
+    },
+    {
+      "icon": "receipt",
+      "label": {
+        "it": "Tassa di soggiorno",
+        "en": "Tourist tax",
+        "de": "Kurtaxe",
+        "fr": "Taxe de séjour"
+      },
+      "value": {}
+    },
+    {
+      "icon": "train-front",
+      "label": {
+        "it": "Come arrivare",
+        "en": "Getting here",
+        "de": "Anreise",
+        "fr": "Comment venir"
+      },
+      "value": {}
+    },
+    {
+      "icon": "languages",
+      "label": {
+        "it": "Lingue parlate",
+        "en": "Languages spoken",
+        "de": "Gesprochene Sprachen",
+        "fr": "Langues parlées"
+      },
+      "value": {}
+    }
+  ],
+  "privacy": {
+    "text": {
+      "it": "Titolare del trattamento: [nome e cognome del titolare], Via Pico della Mirandola 7, 12060 Roddi (CN). Contatti: [telefono / email].\n\nDati raccolti. Questo sito non usa moduli e non raccoglie dati personali di propria iniziativa. Se ci contatti per telefono o WhatsApp, useremo i tuoi dati (nome, numero, messaggi) solo per rispondere e gestire la tua eventuale prenotazione, per il tempo necessario e per gli obblighi di legge (ad esempio la comunicazione degli ospiti alla Questura e la tassa di soggiorno).\n\nHosting. Il sito è ospitato da Vercel Inc., che per motivi tecnici e di sicurezza può registrare dati di navigazione come l'indirizzo IP. Il sito usa l'indirizzo IP solo per scegliere la lingua in base al Paese, senza salvarlo.\n\nCookie. Il sito usa solo memorizzazione tecnica nel tuo browser (la lingua scelta e la tua preferenza sui cookie). La mappa di Google Maps è un contenuto di terze parti che può installare cookie di Google: viene caricata solo se dai il consenso. Puoi cambiare scelta in qualsiasi momento dal link \"Preferenze cookie\" in fondo alla pagina.\n\nI tuoi diritti. Puoi chiedere in ogni momento accesso, rettifica o cancellazione dei tuoi dati, la limitazione o l'opposizione al trattamento, contattandoci ai recapiti sopra. Hai anche il diritto di presentare reclamo al Garante per la protezione dei dati personali (www.garanteprivacy.it).",
+      "en": "Data controller: [owner's full name], Via Pico della Mirandola 7, 12060 Roddi (CN), Italy. Contact: [phone / email].\n\nData collected. This website has no forms and does not collect personal data on its own. If you contact us by phone or WhatsApp, we use your data (name, number, messages) only to reply and handle your booking, for as long as needed and to meet legal obligations (such as guest registration with the police and the tourist tax).\n\nHosting. The site is hosted by Vercel Inc., which may log browsing data such as your IP address for technical and security reasons. The site uses your IP address only to pick the language for your country, without storing it.\n\nCookies. The site only uses technical storage in your browser (your chosen language and your cookie preference). The Google Maps map is third-party content that may set Google cookies: it loads only with your consent. You can change your choice at any time via the \"Cookie preferences\" link at the bottom of the page.\n\nYour rights. You can ask at any time to access, correct or delete your data, or to restrict or object to its processing, using the contact details above. You also have the right to lodge a complaint with the Italian Data Protection Authority (www.garanteprivacy.it)."
     }
   }
 }

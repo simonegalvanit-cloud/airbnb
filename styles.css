@@ -328,3 +328,55 @@ body:not(.editing) .edit-only, body.previewing .edit-only { display: none !impor
 .g-item:nth-child(4) { grid-column: span 2; }
 .mobile-bar > .btn:only-child, .mobile-bar .price-wrap[style*="none"] + .btn { flex: 1; justify-content: center; }
 @media (max-width: 900px) { .g-item:first-child { grid-row: span 2; } }
+.codes .sep { margin: 0 10px; }
+/* crisper downscaling of photos in the grid */
+.g-item img, .about-img { image-rendering: auto; backface-visibility: hidden; }
+
+/* ---- Map: blocked until cookie consent ---- */
+.map { position: relative; }
+.map-consent { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 28px; text-align: center; background: var(--band); color: var(--muted); font-size: .95rem; }
+.map-consent > svg { width: 30px; height: 30px; color: var(--accent); }
+.map-consent p { max-width: 36ch; }
+.map.blocked .map-consent { display: flex; }
+.map-consent .btn { border: 0; cursor: pointer; font: 600 .9rem var(--sans); }
+
+/* ---- Useful info ---- */
+.info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.info-item { display: flex; gap: 16px; align-items: flex-start; background: #fff; padding: 20px 22px; border-radius: 14px; }
+.info-item > svg { width: 22px; height: 22px; color: var(--accent); flex: none; margin-top: 2px; }
+.info-text { flex: 1; min-width: 0; }
+.info-text b { display: block; font-weight: 600; margin-bottom: 4px; }
+.info-text p { color: var(--muted); font-size: .95rem; white-space: pre-line; overflow-wrap: anywhere; }
+.info-item .icon-pick { position: absolute; bottom: 10px; right: 10px; margin: 0; }
+body.editing .info-item { padding-bottom: 48px; }
+.info-item .ctl { top: 8px; right: 8px; }
+.info-hint { margin-top: 12px; max-width: 70ch; background: #fff7df; border: 1px solid #f0dca0; color: #6b5a1f; padding: 10px 14px; border-radius: 10px; font-size: .9rem; }
+.info-grid .add-btn { min-height: 80px; }
+
+/* ---- Cookie banner ---- */
+.cookie { position: fixed; left: 50%; bottom: 20px; z-index: 120; width: min(720px, calc(100% - 32px)); transform: translate(-50%, 30px); opacity: 0; pointer-events: none; display: flex; align-items: center; gap: 18px; background: #fff; color: var(--ink); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; box-shadow: 0 24px 60px -20px rgba(30,20,10,.35); transition: opacity .35s, transform .35s; font-size: .92rem; }
+.cookie.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.cookie p { flex: 1; color: var(--muted); }
+.cookie p a { color: var(--accent); }
+.cookie-actions { display: flex; gap: 8px; flex: none; }
+.cookie .btn { border: 0; cursor: pointer; font: 600 .9rem var(--sans); }
+.btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--ink); border-radius: 999px; padding: .55rem 1.05rem; font: 600 .9rem var(--sans); cursor: pointer; transition: background .2s; }
+.btn-ghost:hover { background: var(--band); }
+body.editing .cookie { display: none; }
+
+/* ---- Footer links + privacy ---- */
+.footer-links { margin-top: 10px; }
+.footer-links a { color: var(--muted); }
+.footer-links .sep { margin: 0 10px; }
+.privacy-card { max-width: 680px; max-height: 84vh; overflow-y: auto; text-align: left; position: relative; padding: 36px 32px; }
+.privacy-card h3 { padding-right: 40px; }
+.privacy-body p { color: var(--muted); font-size: .95rem; margin-bottom: .9rem; }
+.privacy-close { position: absolute !important; top: 16px; right: 16px; }
+
+@media (max-width: 900px) {
+  .cookie { flex-direction: column; align-items: stretch; bottom: 12px; padding: 16px; }
+  .cookie-actions > * { flex: 1; justify-content: center; }
+  .privacy-card { padding: 28px 20px; }
+}
+body.editing .info-item { padding-top: 48px; }
+.edit-lang { max-width: 210px !important; }
